@@ -1,0 +1,210 @@
+/* Estilos para el módulo de historial - MOBILE OPTIMIZED */
+.history-container {
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.history-header h2 {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-delivered {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-pending {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.img-preview-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Ajustes DataTables para móvil */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+    max-width: 100%;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    width: 180px !important;
+}
+
+/* Modal Filtros - Mobile First */
+.filter-modal {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    background: white;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    z-index: 2000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.filter-modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+}
+
+.filter-modal-body {
+    padding: 16px;
+}
+
+.filter-group {
+    margin-bottom: 16px;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-main);
+    font-size: 0.85rem;
+}
+
+.filter-row {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+}
+
+.filter-group.half {
+    flex: 1;
+}
+
+.toggle-group {
+    display: flex;
+    background: var(--bg-light);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+.toggle-option {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggle-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.toggle-option span {
+    display: block;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.toggle-option input:checked+span {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+}
+
+/* Botones pequeños móvil */
+.btn-sm {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-sm.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-sm.btn-secondary {
+    background: white;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+/* Responsive DataTables - mobile */
+table.dataTable.no-footer {
+    border-bottom: 1px solid var(--border) !important;
+}
+
+#deliveryTable {
+    width: 100% !important;
+    font-size: 0.8rem;
+}
+
+#deliveryTable thead th {
+    background-color: #f8fafc;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.7rem;
+    padding: 10px 8px;
+}
+
+#deliveryTable tbody td {
+    padding: 10px 8px;
+}

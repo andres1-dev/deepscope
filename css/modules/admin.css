@@ -1,0 +1,409 @@
+/* =========================================
+   ADMIN USUARIOS - MOBILE FIRST
+   ========================================= */
+
+.user-admin-modal {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: var(--background);
+  border-radius: 32px 32px 0 0;
+  box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.15);
+  z-index: 10005;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 85vh;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.user-admin-header {
+  padding: 24px 28px;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-admin-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -0.5px;
+}
+
+.user-admin-header h3 i {
+  color: var(--primary);
+  opacity: 0.9;
+}
+
+.user-admin-toolbar {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+  background: var(--background);
+}
+
+.user-list-container {
+  flex: 1;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Modern User Cards Layout --- */
+.user-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.user-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-soft);
+}
+
+/* Card Header: Name + ID on left, Badge on right */
+.user-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px dashed var(--border-light);
+  padding-bottom: 12px;
+}
+
+.user-info-primary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-name-title {
+  font-weight: 800;
+  color: var(--text-main);
+  font-size: 1.05rem;
+}
+
+.user-id-subtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Card Body: Info details */
+.user-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  background: var(--background);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.user-detail-item i {
+  color: var(--primary);
+  width: 16px;
+  text-align: center;
+}
+
+/* Card Footer: Buttons */
+.user-card-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+/* Badges */
+.role-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.role-badge.role-admin {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.role-badge.role-moderator {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.role-badge.role-user,
+.role-badge.role-delivery {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.role-badge.role-guest {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+}
+
+/* Action buttons */
+.action-btn {
+  flex: 1;
+  /* Stretch evenly */
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  background: var(--background);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  font-weight: 600;
+  font-size: 0.85rem;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn.edit-btn:hover {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.action-btn.delete-btn:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.btn-add-user {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  box-shadow: 0 8px 15px rgba(37, 99, 235, 0.25);
+}
+
+.btn-add-user:active {
+  transform: scale(0.96);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+/* Form Modal - Mobile Fullscreen */
+.user-form-modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  z-index: 10010;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.user-form-modal {
+  background: var(--background);
+  width: 100%;
+  max-height: 85vh;
+  border-radius: 32px 32px 0 0;
+  overflow: hidden;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.user-form-header {
+  padding: 24px 28px;
+  border-bottom: 2px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+}
+
+.user-form-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+.user-form-body {
+  padding: 20px 28px;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+.form-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input-wrapper i {
+  position: absolute;
+  left: 14px;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--background);
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+  outline: none;
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--background);
+  cursor: pointer;
+}
+
+.user-form-footer {
+  padding: 20px 28px 24px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  background: var(--surface);
+}
+
+.btn-cancel {
+  background: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(37, 99, 235, 0.25);
+  transition: all 0.2s;
+}
+
+.btn-save:active {
+  transform: scale(0.96);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+@media (max-width: 480px) {
+  .form-group-row {
+    grid-template-columns: 1fr;
+  }
+}

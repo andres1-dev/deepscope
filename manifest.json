@@ -1,0 +1,33 @@
+{
+  "name": "DeepSeek",
+  "short_name": "DeepSeek",
+  "description": "Professional QR Delivery System",
+  "id": "/",
+  "start_url": "./index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "lang": "es-CO",
+  "categories": [
+    "business",
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "1600x1600 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/apple-touch-icon.svg",
+      "sizes": "1024x1024",
+      "type": "image/svg+xml"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

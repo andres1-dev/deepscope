@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Contraseña · App</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/icon-ios.svg?v=2">
+
+    <!-- Metadatos de la PWA estáticos para compatibilidad -->
+    <meta name="apple-mobile-web-app-title" content="App" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="App" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-tap-highlight" content="no" />
+
+    <!-- Configuración Global de la App y Branding Dinámico -->
+    <script src="js/core/config.js"></script>
+    <script>
+        document.title = `Nueva Contraseña · ${CONFIG.APP_NAME}`;
+        if (document.querySelector('meta[name="application-name"]')) document.querySelector('meta[name="application-name"]').content = CONFIG.APP_NAME;
+        if (document.querySelector('meta[name="apple-mobile-web-app-title"]')) document.querySelector('meta[name="apple-mobile-web-app-title"]').content = CONFIG.APP_SHORT_NAME;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.brand-app-name').forEach(el => el.textContent = CONFIG.APP_NAME);
+            document.querySelectorAll('.brand-app-desc').forEach(el => el.textContent = CONFIG.APP_DESCRIPTION);
+            document.querySelectorAll('.brand-logo-alt').forEach(el => el.alt = `${CONFIG.APP_NAME} Logo`);
+            document.querySelectorAll('.credits').forEach(el => el.innerHTML = CONFIG.FOOTER_CREDITS);
+        });
+    </script>
+    <!-- CSS Base centralizado para el Branding -->
+    <link rel="stylesheet" href="css/core/base.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main, 'Inter', sans-serif);
+            background-color: var(--background, #f3f4f6);
+            color: var(--text-main, #1f2937);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: subtleFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes subtleFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header p {
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        /* --- Input Styles --- */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        /* El contenedor ahora es la "caja" visual */
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 0 1rem;
+            transition: all 0.2s;
+            height: 52px;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-wrapper i.main-icon {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 1rem;
+            color: var(--text);
+            width: 100%;
+            height: 100%;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .toggle-btn:hover {
+            color: var(--accent);
+        }
+
+        /* --- Validation Grid --- */
+        .validation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .v-item {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .v-item i {
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .v-item.success {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .v-item.error {
+            color: var(--error);
+        }
+
+        /* --- Button --- */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            filter: brightness(1.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* --- Messages --- */
+        #alert {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            text-align: center;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .token-warning {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 400px) {
+            .validation {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <div class="logo-container">
+                <img src="icons/icon.svg" alt="App Logo" class="logo brand-logo-alt">
+            </div>
+            <h1 class="brand-app-name">Cargando...</h1>
+            <p class="brand-app-desc">Restablecer Contraseña</p>
+        </div>
+
+        <div id="tokenNotice" class="token-warning" style="display: none;">
+            <i class="fas fa-triangle-exclamation"></i>
+            Enlace no válido. Solicita uno nuevo.
+        </div>
+
+        <form id="resetForm">
+            <div class="form-group">
+                <label class="label">Contraseña Nueva</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock main-icon"></i>
+                    <input type="password" id="p1" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+                    <button type="button" class="toggle-btn" onclick="togglePass('p1', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="label">Confirmar Contraseña</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-shield-halved main-icon"></i>
+                    <input type="password" id="p2" placeholder="Repite la contraseña" autocomplete="off">
+                    <button type="button" class="toggle-btn" onclick="togglePass('p2', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="validation">
+                <div id="v-len" class="v-item"><i class="fas fa-circle-dot"></i> 8+ caracteres</div>
+                <div id="v-up" class="v-item"><i class="fas fa-circle-dot"></i> Una mayúscula</div>
+                <div id="v-low" class="v-item"><i class="fas fa-circle-dot"></i> Una minúscula</div>
+                <div id="v-num" class="v-item"><i class="fas fa-circle-dot"></i> Un número</div>
+                <div id="v-match" class="v-item" style="grid-column: span 2;"><i class="fas fa-circle-dot"></i> Las
+                    contraseñas coinciden</div>
+            </div>
+
+            <button type="submit" id="saveBtn" class="btn btn-primary" disabled>
+                Actualizar Acceso
+            </button>
+
+            <div id="alert"></div>
+        </form>
+    </div>
+
+    <script>
+        const API = API_URL_POST;
+
+        const inp1 = document.getElementById('p1');
+        const inp2 = document.getElementById('p2');
+        const btn = document.getElementById('saveBtn');
+        const alert = document.getElementById('alert');
+        const tokenNotice = document.getElementById('tokenNotice');
+
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+
+        if (!token) tokenNotice.style.display = 'flex';
+
+        function togglePass(id, btn) {
+            const field = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                field.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function validate() {
+            const v = inp1.value;
+            const v2 = inp2.value;
+
+            const checks = {
+                len: v.length >= 8,
+                up: /[A-Z]/.test(v),
+                low: /[a-z]/.test(v),
+                num: /[0-9]/.test(v),
+                match: v.length > 0 && v === v2
+            };
+
+            for (const [key, ok] of Object.entries(checks)) {
+                const el = document.getElementById('v-' + key);
+                const icon = el.querySelector('i');
+                if (v.length === 0 && key !== 'match') {
+                    el.className = 'v-item';
+                    icon.className = 'fas fa-circle-dot';
+                } else {
+                    el.className = ok ? 'v-item success' : 'v-item error';
+                    icon.className = ok ? 'fas fa-circle-check' : 'fas fa-circle-xmark';
+                }
+            }
+
+            btn.disabled = !(checks.len && checks.up && checks.low && checks.num && checks.match && token);
+        }
+
+        inp1.addEventListener('input', validate);
+        inp2.addEventListener('input', validate);
+
+        document.getElementById('resetForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (btn.disabled) return;
+
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+            alert.style.display = 'none';
+
+            try {
+                const res = await fetch(API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'resetPassword',
+                        token: token,
+                        newPassword: inp1.value
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    alert.className = 'alert-success';
+                    alert.innerText = "¡Contraseña actualizada! Redirigiendo...";
+                    alert.style.display = 'block';
+                    setTimeout(() => window.location.href = 'login.html', 2000);
+                } else {
+                    throw new Error(data.message || "Error del servidor");
+                }
+            } catch (err) {
+                alert.className = 'alert-error';
+                alert.innerText = err.message;
+                alert.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+    </script>
+    </div>
+</body>
+
+</html>

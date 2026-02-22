@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- FIX: Viewport estrictamente mobile, sin escalado -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>App</title>
+  <meta name="apple-mobile-web-app-title" content="App" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="application-name" content="App" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <!-- Configuración Global de la App y Branding Dinámico -->
+  <script src="js/core/config.js"></script>
+  <script src="js/core/biometry.js"></script>
+  <script>
+    // Inyectar etiquetas meta dinámicamente antes del renderizado
+    document.title = `${CONFIG.APP_NAME} - Delivery System`;
+    if (document.querySelector('meta[name="application-name"]')) document.querySelector('meta[name="application-name"]').content = CONFIG.APP_NAME;
+    if (document.querySelector('meta[name="apple-mobile-web-app-title"]')) document.querySelector('meta[name="apple-mobile-web-app-title"]').content = CONFIG.APP_SHORT_NAME;
+
+    // Al cargar el DOM, injectar textos
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.brand-app-name').forEach(el => el.textContent = CONFIG.APP_NAME);
+      document.querySelectorAll('.brand-app-desc').forEach(el => el.textContent = CONFIG.APP_DESCRIPTION);
+      document.querySelectorAll('.brand-app-version').forEach(el => el.textContent = `Build ${CONFIG.APP_VERSION}`);
+      document.querySelectorAll('.brand-logo-alt').forEach(el => el.alt = `${CONFIG.APP_NAME} Logo`);
+      document.querySelectorAll('.credits').forEach(el => el.innerHTML = CONFIG.FOOTER_CREDITS);
+      document.querySelectorAll('.social-icon[href*="facebook"]').forEach(el => el.href = CONFIG.SOCIAL_LINKS.FACEBOOK);
+      document.querySelectorAll('.social-icon[href*="instagram"]').forEach(el => el.href = CONFIG.SOCIAL_LINKS.INSTAGRAM);
+      document.querySelectorAll('.social-icon[href*="wa.me"]').forEach(el => el.href = CONFIG.SOCIAL_LINKS.WHATSAPP);
+    });
+  </script>
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Icono Unificado (Giant + PWA Compatible) -->
+  <link rel="icon" type="image/svg+xml" sizes="any 1600x1600" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.svg">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Modularizado - Jerarquía Organizada -->
+  <link rel="stylesheet" href="css/core/base.css">
+  <link rel="stylesheet" href="css/core/layout.css">
+  <link rel="stylesheet" href="css/core/content.css">
+  <link rel="stylesheet" href="css/modules/scanner.css">
+  <link rel="stylesheet" href="css/modules/admin.css">
+  <link rel="stylesheet" href="css/modules/upload.css">
+  <link rel="stylesheet" href="css/modules/soportes.css">
+  <link rel="stylesheet" href="css/modules/historial.css">
+  <link rel="stylesheet" href="css/modules/soportes_grid.css">
+  <script src="js/core/auth_check.js"></script>
+
+  <!-- jQuery and DataTables -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+  <!-- Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+  <!-- SheetJS for Excel processing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- Biblioteca para escanear QR -->
+  <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@latest/dist/html5-qrcode.min.js"></script>
+
+</head>
+
+<body>
+  <!-- MARCO PRINCIPAL - 100% MOBILE -->
+  <div id="app-frame">
+    <!-- Script de Seguridad: Verificación de sesión rápida -->
+    <!-- El bloqueo de sesión ahora está en js/auth_check.js -->
+
+
+    <!-- Pantalla de carga -->
+    <div id="loadingScreen">
+      <div class="loading-container">
+        <div class="loading-logo">
+          <div class="logo-icon">
+            <img src="icons/icon.svg" alt="App Logo" id="design-icon" class="brand-logo-alt"
+              style="width: 100%; height: 100%;">
+          </div>
+          <h1 class="brand-app-name"></h1>
+          <p class="brand-app-desc"></p>
+
+          <div class="loading-spinner">
+            <span class="spinner-dot"></span>
+            <span class="spinner-dot"></span>
+            <span class="spinner-dot"></span>
+          </div>
+        </div>
+
+        <div class="loading-footer">
+          <div class="footer-content">
+            <p class="credits">
+              Developed by <strong>Andrés Mendoza</strong><br>
+              © 2026 · Supported by GrupoTDM
+            </p>
+
+            <div class="social-icons">
+              <a href="https://www.facebook.com/templodelamoda/" target="_blank" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://www.instagram.com/eltemplodelamoda/" target="_blank" class="social-icon">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://wa.me/573168007979" target="_blank" class="social-icon">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Vista de Historial (DataTables) - Mobile Optimized -->
+    <div id="historyView"
+      style="display: none; padding: 16px; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+      <div class="history-header">
+        <div>
+          <h2>Historial de Entregas</h2>
+          <p style="color: var(--text-secondary); margin-top: 2px; font-size: 0.8rem;">Reporte combinado</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-sm btn-secondary" id="openFiltersBtn">
+            <i class="fas fa-filter"></i> Filtros
+          </button>
+          <button class="btn-sm btn-primary" id="refreshHistoryBtn" onclick="loadHistoryData()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="history-container">
+        <table id="deliveryTable" class="display responsive nowrap" style="width:100%">
+          <thead>
+            <tr>
+              <th>Factura</th>
+              <th>Lote</th>
+              <th>Referencia</th>
+              <th>Cantidad</th>
+              <th>Soporte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data loaded via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Vista de Carga SIESA - Mobile -->
+    <div id="uploadSiesaView" style="display: none;">
+      <div class="app-container">
+        <div class="app-header">
+          <h1 class="app-title">
+            <i class="fas fa-box-open me-2"></i> <span class="brand-app-name"></span>
+          </h1>
+          <p class="app-subtitle brand-app-desc"></p>
+        </div>
+
+        <div class="app-content">
+          <div class="status-card" id="statusCardUpload">
+            <i class="fas fa-circle" id="statusIconUpload"></i>
+            <div>
+              <div class="fw-semibold" id="statusTitleUpload">Conectando al servidor...</div>
+              <small class="text-muted" id="statusMessageUpload">Verificando conexión</small>
+            </div>
+          </div>
+
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">
+              <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <h4 class="fw-semibold mb-2">Arrastra o toca</h4>
+            <p class="text-muted mb-3">CSV, XLSX · máx 10MB</p>
+            <button class="btn-outline-primary" id="btnSelectFiles">
+              <i class="fas fa-folder-open me-2"></i> Seleccionar
+            </button>
+            <input type="file" id="fileInputUpload" multiple accept=".csv,.xlsx" style="display: none;">
+          </div>
+
+          <div class="files-container" id="filesContainerUpload">
+            <div class="files-header">
+              <div>
+                <h5 class="fw-semibold mb-0">Archivos</h5>
+                <small class="text-muted" id="filesCountUpload">0 archivos</small>
+              </div>
+              <button class="btn-outline-danger" id="btnClearAllUpload">
+                <i class="fas fa-trash me-1"></i> Limpiar
+              </button>
+            </div>
+            <div class="file-list" id="fileListUpload"></div>
+          </div>
+
+          <button class="btn-primary" id="btnProcessUpload" disabled>
+            <i class="fas fa-play-circle"></i>
+            <span>PROCESAR</span>
+            <span id="processingSpinnerUpload" style="display: none;">
+              <span class="spinner"></span>
+            </span>
+          </button>
+
+          <div class="results-section" id="resultsSectionUpload">
+            <div class="results-header">
+              <h5 class="fw-semibold mb-0">
+                <i class="fas fa-chart-line me-2"></i> Resultados
+              </h5>
+            </div>
+            <div class="results-content">
+              <div id="resultsContentUpload"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal - Scanner -->
+    <div id="scanner" style="display: none;">
+      <div id="offline-banner" class="offline-banner" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Sin conexión
+      </div>
+
+      <div class="app-header">
+        <div class="header-main-row"
+          style="display: flex; gap: 12px; align-items: center; width: 100%; margin-bottom: 8px;">
+          <div class="barcode-input-container"
+            style="flex: 1; margin-bottom: 0; display: flex; align-items: center; position: relative;">
+            <i class="fa-solid fa-barcode" id="inputIcon" title="Tocar para acción"></i>
+            <input type="text" id="barcode" autofocus placeholder="Escanear con PDA..." inputmode="numeric"
+              style="width: 100%; padding-right: 54px;">
+
+            <div class="header-menu-container" style="position: absolute; right: 6px; z-index: 10;">
+              <button id="mainMenuToggleBtn" class="icon-btn main-menu-toggle" onclick="toggleHeaderMenu()"
+                title="Opciones"
+                style="background: transparent; border: none; box-shadow: none; width: 40px; height: 40px;">
+                <i class="fas fa-ellipsis-v"></i>
+                <span class="global-menu-badge" id="globalMenuBadge" style="display: none;"></span>
+              </button>
+
+              <div id="headerDropdownMenu" class="header-dropdown-menu">
+                <button id="openDailyReportBtn" class="dropdown-item" title="Resumen Diario">
+                  <i class="fas fa-chart-pie"></i> <span>Resumen Diario</span>
+                </button>
+                <button id="mobileQueueBtn" class="dropdown-item" title="Cola de carga"
+                  onclick="if(window.toggleQueue) window.toggleQueue();">
+                  <i class="fas fa-cloud-upload-alt"></i> <span>Cola de Carga</span>
+                  <span class="mobile-queue-badge dropdown-badge" style="display: none;">0</span>
+                </button>
+                <button id="openSoportesGridBtn" class="dropdown-item" title="Entregas">
+                  <i class="fas fa-images"></i> <span>Entregas</span>
+                  <span class="notification-badge dropdown-badge" id="soportesNotification"
+                    style="display: none;">•</span>
+                </button>
+                <button id="refreshDataBtn" class="dropdown-item" onclick="loadDataFromServer()" title="Actualizar">
+                  <i class="fas fa-sync-alt"></i> <span>Actualizar Datos</span>
+                </button>
+                <div class="dropdown-divider" id="adminDivider" style="display: none;"></div>
+                <button id="openUserAdminBtn" class="dropdown-item" onclick="openUserAdmin()"
+                  title="Administrar Usuarios" style="display: none;">
+                  <i class="fas fa-users-cog"></i> <span>Usuarios</span>
+                </button>
+                <div class="dropdown-divider"></div>
+                <button id="openSettingsBtn" class="dropdown-item" title="Configuración">
+                  <i class="fas fa-cog"></i> <span>Configuración</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lógica de menú movida a js/interfaz.js -->
+        </div>
+        <div class="system-status-bar">
+          <div id="status">Sistema Listo</div>
+          <div class="data-stats" id="data-stats">Esperando datos...</div>
+          <div id="upload-status-counter" class="upload-status-counter" style="display: none;">
+            <span id="upload-count">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="results"></div>
+    </div>
+
+    <!-- Modal QR Scanner -->
+    <div id="qrScannerModal" class="qr-scanner-modal" style="display: none;">
+      <div class="qr-scanner-header">
+        <h3><i class="fas fa-qrcode"></i> Escanear QR</h3>
+        <button class="qr-close-btn" id="closeQrScanner">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="qrReader"></div>
+      <div class="qr-scanner-actions">
+        <button class="btn btn-primary" id="toggleCameraBtn">
+          <i class="fas fa-camera-rotate"></i> Cambiar
+        </button>
+        <button class="btn btn-danger" id="cancelQrScan">
+          <i class="fas fa-stop"></i> Cancelar
+        </button>
+      </div>
+    </div>
+    <div id="qrScannerOverlay" class="qr-scanner-overlay" style="display: none;"></div>
+
+    <!-- Modal Cámara -->
+    <div id="cameraModal" class="camera-modal">
+      <video id="cameraFeed" class="camera-view" autoplay playsinline></video>
+      <canvas id="photoCanvas" style="display: none;"></canvas>
+      <img id="photoPreview" alt="Vista previa">
+      <div class="camera-actions">
+        <button id="takePhotoBtn" class="btn btn-primary">
+          <i class="fas fa-camera"></i>
+        </button>
+        <button id="cancelCaptureBtn" class="btn btn-danger">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="uploadStatus" class="uploading-status">
+        <i class="fas fa-spinner fa-pulse"></i> Subiendo...
+      </div>
+      <input type="text" id="dummyInput" style="position: absolute; opacity: 0; height: 0; width: 0;" readonly />
+    </div>
+
+    <!-- Botón flotante cola - OCULTO -->
+    <div id="queueCounter" class="queue-counter empty" style="display: none !important;">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <span class="queue-counter-badge">0</span>
+    </div>
+
+    <!-- Modal Cola -->
+    <div id="queueModal" class="queue-modal">
+      <div class="queue-modal-header">
+        <div>
+          <h3><i class="fas fa-tasks"></i> Cola de carga</h3>
+          <div class="queue-status-text">Sin actividad</div>
+        </div>
+        <button class="queue-close-btn" id="closeQueueModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="queue-modal-body">
+        <div class="queue-stats">
+          <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Pendientes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Procesando</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">0</span>
+            <span class="stat-label">Completados</span>
+          </div>
+        </div>
+        <div class="queue-items-container">
+          <div id="queueItemsList" class="queue-items-list">
+            <div class="queue-empty-state">
+              <i class="fas fa-check-circle"></i>
+              <p>Sin elementos</p>
+            </div>
+          </div>
+        </div>
+        <div class="queue-actions">
+          <button class="queue-action-btn secondary" id="retryFailedBtn">
+            <i class="fas fa-redo"></i>
+          </button>
+          <button class="queue-action-btn primary" id="processQueueBtn">
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="queueModalOverlay" class="queue-modal-overlay" style="display: none;"></div>
+
+    <!-- Modal Configuración -->
+    <div id="settingsModal" class="settings-modal" style="display: none;">
+      <div class="settings-header">
+        <h3><i class="fas fa-cog"></i> Configuración</h3>
+        <button class="close-btn" id="closeSettingsBtn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="settings-body">
+        <div class="user-profile-section">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-info-text">
+            <div class="user-name" id="settingsUserName">Usuario</div>
+            <div class="user-role-badge" id="settingsUserRole">Rol</div>
+          </div>
+          <button id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-title">Modo de Entrada</span>
+            <span class="setting-desc">Método de captura</span>
+          </div>
+          <div class="mode-selection-grid">
+            <button class="mode-option-card btn-camera" data-mode="camera">
+              <div class="mode-icon"><i class="fas fa-camera"></i></div>
+              <div class="mode-details">
+                <span class="mode-name">Cámara</span>
+                <span class="mode-desc">QR</span>
+              </div>
+              <div class="mode-check"><i class="fas fa-check-circle"></i></div>
+            </button>
+            <button class="mode-option-card btn-keyboard" data-mode="manual">
+              <div class="mode-icon"><i class="fas fa-keyboard"></i></div>
+              <div class="mode-details">
+                <span class="mode-name">Manual</span>
+                <span class="mode-desc">Teclado</span>
+              </div>
+              <div class="mode-check"><i class="fas fa-check-circle"></i></div>
+            </button>
+            <button class="mode-option-card btn-pda active" data-mode="pda">
+              <div class="mode-icon"><i class="fas fa-barcode"></i></div>
+              <div class="mode-details">
+                <span class="mode-name">PDA</span>
+                <span class="mode-desc">Laser</span>
+              </div>
+              <div class="mode-check"><i class="fas fa-check-circle"></i></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-title">Foco Persistente</span>
+            <span class="setting-desc">Mantiene teclado activo</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="persistentFocusToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-title">Filtrar por Cliente</span>
+            <span class="setting-desc">Validar entregas</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="clientFilterToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-title">Sonidos de Feedback</span>
+            <span class="setting-desc">Confirmaciones auditivas</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="audioFeedbackToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <!-- Biometría -->
+        <div class="setting-item" id="biometrySetting" style="display: none;">
+          <div class="setting-info">
+            <span class="setting-title">Acceso Biométrico</span>
+            <span class="setting-desc" id="biometryDesc">Huella o FaceID</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="biometryToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <!-- Notificaciones -->
+        <div class="setting-item">
+          <div class="setting-info">
+            <span class="setting-title">Notificaciones Push</span>
+            <span class="setting-desc" id="notifDesc">Estado: Desactivado</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="notifToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+
+        <div class="setting-select-container" id="clientSelectContainer" style="display: none;">
+          <label for="clientSelect">Cliente</label>
+          <select id="clientSelect" class="form-select">
+            <option value="">-- Seleccionar --</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="settingsOverlay" class="modal-overlay" style="display: none;"></div>
+
+
+    <!-- MODAL DE GRID DE SOPORTES -->
+    <div id="soportesGridModal" class="soportes-grid-modal" style="display: none;">
+      <!-- Header -->
+      <div class="soportes-grid-header">
+        <h3>
+          <i class="fas fa-images"></i>
+          Entregas
+        </h3>
+        <button class="close-btn" id="closeSoportesGridBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Cabeza de Soportes (Sin toolbar global) -->
+      <div class="soportes-tabs" style="border-bottom: 1px solid #e2e8f0; margin-bottom: 0;">
+        <button class="soportes-tab active" data-tab="grid">
+          <i class="fas fa-images"></i>
+          Soportes
+        </button>
+        <button class="soportes-tab" data-tab="kpis">
+          <i class="fas fa-chart-pie"></i>
+          KPIs
+        </button>
+      </div>
+
+      <!-- Contenedor Principal de KPIs y Facturas Pendientes -->
+      <div id="soportesKpiWrapper"
+        style="display: none; flex-direction: column; flex: 1; background: #f8fafc; overflow: hidden; min-height: 0;">
+
+        <!-- Toolbar Exclusiva de KPIs -->
+        <div class="kpi-toolbar"
+          style="padding: 12px 16px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; flex-shrink: 0;">
+          <div class="search-box" style="flex: 1; min-width: 200px;">
+            <i class="fas fa-search"></i>
+            <input type="search" id="kpiSearchInput" placeholder="Buscar factura pendiente..." autocomplete="off">
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="filter-btn" id="openKpiFiltersBtn" title="Filtrar Facturas"
+              style="border-radius: 30px; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #e2e8f0; background: white;">
+              <i class="fas fa-filter"></i>
+            </button>
+            <button class="filter-btn" id="downloadSoportesBtn" title="Descargar CSV"
+              style="border-radius: 30px; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #e2e8f0; background: white;">
+              <i class="fas fa-file-csv"></i>
+            </button>
+            <button class="filter-btn" id="refreshSoportesBtn" title="Actualizar Datos"
+              style="border-radius: 30px; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #e2e8f0; background: white;">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Contenido scrolleable de KPIs -->
+        <div style="flex: 1; overflow-y: auto; min-height: 0; -webkit-overflow-scrolling: touch;">
+
+          <!-- Encabezado de Sección Colapsable -->
+          <div class="kpi-section-header" id="toggleKpiBtn"
+            style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; cursor: pointer; background: white;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div
+                style="width: 32px; height: 32px; background: #eff6ff; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-chart-pie" style="color: #2563eb;"></i>
+              </div>
+              <div>
+                <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #0f172a;">Resumen General</h4>
+                <p style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;">Key Performance Indicators
+                </p>
+              </div>
+            </div>
+            <div class="kpi-toggle-indicator collapsed" id="kpiToggleIcon">
+              <i class="fas fa-chevron-up" style="color: #94a3b8;"></i>
+            </div>
+          </div>
+
+          <!-- Contenedor Colapsable (Colapsado por defecto) -->
+          <div class="kpi-collapsible-content collapsed" id="kpiCollapsibleArea">
+            <div class="soportes-kpi-container" id="soportesKpiContainer">
+              <!-- Tarjeta 1: ENTREGADO -->
+              <div class="kpi-card compact entregado" id="cardEntregado">
+                <div class="kpi-header-mini">
+                  <div class="kpi-title-row">
+                    <span class="kpi-icon-flat"><i class="fas fa-check-circle"></i></span>
+                    <span class="kpi-title-text">ENTREGADO</span>
+                  </div>
+                  <div class="kpi-badge-pill success">Óptimo</div>
+                </div>
+
+                <div class="kpi-content-main">
+                  <div class="kpi-prime">
+                    <span class="kpi-main-num" id="kpiEntregadoFacturas">0</span>
+                    <span class="kpi-main-total">/ <span id="kpiTotalFacturasCard1">0</span></span>
+                  </div>
+                  <div class="kpi-side-val">
+                    <span id="kpiEntregadoPct">0%</span>
+                  </div>
+                </div>
+
+                <div class="kpi-bar-mini">
+                  <div class="kpi-bar-inner" id="kpiEntregadoBar" style="width: 0%;"></div>
+                </div>
+
+                <div class="kpi-grid-details">
+                  <div class="kpi-detail">
+                    <label>UNIDADES</label>
+                    <div class="kpi-detail-val">
+                      <span id="kpiEntregadoUnidades">0</span>
+                      <small>/ <span id="kpiTotalUnidadesCard1">0</span></small>
+                    </div>
+                  </div>
+                  <div class="kpi-detail">
+                    <label>VALOR BRUTO</label>
+                    <div class="kpi-detail-val highlight" id="kpiEntregadoValor">$0</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tarjeta 2: PENDIENTE -->
+              <div class="kpi-card compact pendiente" id="cardPendiente">
+                <div class="kpi-header-mini">
+                  <div class="kpi-title-row">
+                    <span class="kpi-icon-flat"><i class="fas fa-clock"></i></span>
+                    <span class="kpi-title-text">PENDIENTE</span>
+                  </div>
+                  <div class="kpi-badge-pill danger" id="kpiGeneralBadge">Alerta</div>
+                </div>
+
+                <div class="kpi-content-main">
+                  <div class="kpi-prime">
+                    <span class="kpi-main-num" id="kpiPendienteFacturas">0</span>
+                    <span class="kpi-main-total">/ <span id="kpiTotalFacturasCard2">0</span></span>
+                  </div>
+                  <div class="kpi-side-val warning">
+                    <span id="kpiPendientePct">0%</span>
+                  </div>
+                </div>
+
+                <div class="kpi-bar-mini">
+                  <div class="kpi-bar-inner danger" id="kpiPendienteBar" style="width: 0%;"></div>
+                </div>
+
+                <div class="kpi-grid-details">
+                  <div class="kpi-detail">
+                    <label>UNIDADES</label>
+                    <div class="kpi-detail-val">
+                      <span id="kpiPendienteUnidades">0</span>
+                      <small>/ <span id="kpiTotalUnidadesCard2">0</span></small>
+                    </div>
+                  </div>
+                  <div class="kpi-detail">
+                    <label>VALOR PENDIENTE</label>
+                    <div class="kpi-detail-val highlight danger" id="kpiPendienteValor">$0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista de Facturas Pendientes (DataTable) - CABECERA COLAPSABLE -->
+          <div class="kpi-section-header" id="togglePendingListBtn"
+            style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; cursor: pointer; background: white; margin-top: 0px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div
+                style="width: 32px; height: 32px; background: #fef2f2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-list-ul" style="color: #ef4444; font-size: 0.9rem;"></i>
+              </div>
+              <div>
+                <h4 style="margin: 0; font-size: 1.05rem; color: #0f172a; font-weight: 800;">Facturas Pendientes</h4>
+                <p style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 600;" id="kpiPendingCount">0
+                  registros</p>
+              </div>
+            </div>
+            <div class="kpi-toggle-indicator collapsed" id="pendingListToggleIcon">
+              <i class="fas fa-chevron-up" style="color: #94a3b8;"></i>
+            </div>
+          </div>
+
+          <!-- Contenedor Colapsable (Colapsado por defecto) -->
+          <div class="kpi-collapsible-content collapsed" id="pendingListCollapsible">
+            <div class="kpi-pending-list-container" style="padding: 10px 20px 20px 20px;">
+              <div class="history-container"
+                style="margin-top: 0; padding: 0; background: transparent; box-shadow: none; border: none;">
+                <table id="kpiPendingTable" class="display responsive nowrap" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Factura</th>
+                      <th>Cantidad</th>
+                      <th>Referencia</th>
+                      <th>Lote</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Data loaded via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Container -->
+      <div class="soportes-grid-container" id="soportesGridWrapper"
+        style="display: flex; flex-direction: column; padding: 0; overflow: hidden; min-height: 0; flex: 1;">
+        <!-- Toolbar Exclusiva del Grid -->
+        <div class="grid-toolbar"
+          style="padding: 12px 16px; background: white; border-bottom: 1px solid #e2e8f0; flex-shrink: 0;">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="search" id="soportesGridSearch" placeholder="Buscar en fotos (factura, cliente...)"
+              autocomplete="off">
+          </div>
+        </div>
+
+        <!-- Scrollable Grid Area -->
+        <div id="gridScrollArea"
+          style="flex: 1; overflow-y: auto; background: #f8fafc; padding: 16px; position: relative; min-height: 0; -webkit-overflow-scrolling: touch;">
+          <!-- Grid Cards Content -->
+          <div class="soportes-grid" id="soportesGridContainer"></div>
+
+          <!-- Infinite Scroll Sentinel -->
+          <div class="grid-sentinel" id="grid-sentinel"
+            style="display: flex; justify-content: center; align-items: center; padding: 20px; color: #64748b; font-weight: 600;">
+            <i class="fas fa-circle-notch fa-spin" style="margin-right: 8px;"></i>
+            Cargando más...
+          </div>
+
+          <!-- Loading state -->
+          <div class="grid-loading" id="soportesGridLoading"
+            style="display: none; padding: 40px; text-align: center; color: #64748b;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p style="margin-top: 10px;">Cargando entregas...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div class="grid-empty" id="soportesGridEmpty"
+            style="display: none; flex-direction: column; align-items: center; padding: 60px; color: #94a3b8;">
+            <i class="fas fa-camera" style="font-size: 3rem; margin-bottom: 15px;"></i>
+            <h4>No hay fotos para mostrar</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="soportes-grid-stats">
+        <div class="stats-info">
+          <i class="fas fa-database"></i>
+          <span id="soportesGridCount">0 entregas</span>
+        </div>
+        <div class="stats-info">
+          <span class="stats-badge" id="soportesGridBadge">
+            <i class="fas fa-sync-alt"></i> Actualizado
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Imagen -->
+    <div id="soportesImageModal" class="soportes-image-modal" style="display: none;">
+      <img id="soportesModalImage" src="" alt="Soporte de entrega">
+      <div class="soportes-modal-footer">
+        <!-- <button class="btn-light" onclick="document.getElementById('soportesImageModal').style.display='none'">
+      <i class="fas fa-times"></i> Cerrar
+    </button>
+    <button class="btn-light" id="downloadImageBtn">
+      <i class="fas fa-download"></i> Descargar
+    </button> -->
+      </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="soportesGridOverlay" class="modal-overlay" style="display: none;"></div>
+
+    <!-- Modal Editar Factura Pendiente -->
+    <div id="editPendingModal" class="manual-modal" style="display: none; z-index: 20002;">
+      <div class="manual-header">
+        <h3><i class="fas fa-edit"></i> Editar Factura</h3>
+        <button class="close-btn" onclick="SoportesGrid.closeEditModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="manual-body">
+        <div class="form-group">
+          <label>Factura</label>
+          <div class="input-wrapper">
+            <i class="fas fa-file-invoice"></i>
+            <input type="text" id="editKpiFactura" class="form-input" readonly style="background: #f8fafc;">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Referencia</label>
+          <div class="input-wrapper">
+            <i class="fas fa-tag"></i>
+            <input type="text" id="editKpiReferencia" class="form-input" readonly style="background: #f8fafc;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Estado</label>
+          <div class="input-wrapper">
+            <i class="fas fa-info-circle"></i>
+            <select id="editKpiEstado" class="form-select" style="background: white; padding-left: 42px;">
+              <option value="En elaboración">En elaboración</option>
+              <option value="Aprobadas">Aprobadas</option>
+              <option value="Anuladas">Anuladas</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="editKpiLoteGroup">
+          <label for="editKpiLote">Número de Lote</label>
+          <div class="input-wrapper">
+            <i class="fas fa-cube"></i>
+            <input type="text" id="editKpiLote" placeholder="Lote" class="form-input">
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+          <button onclick="SoportesGrid.closeEditModal()" class="btn-secondary" style="flex: 1;">
+            Cancelar
+          </button>
+          <button id="saveEditKpiBtn" onclick="SoportesGrid.savePendingEdit()" class="btn-primary" style="flex: 1;">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="editPendingOverlay" class="modal-overlay" style="display: none; z-index: 20001;"
+      onclick="SoportesGrid.closeEditModal()"></div>
+
+    <!-- Modal Entrada Manual -->
+    <div id="manualInputModal" class="manual-modal" style="display: none;">
+      <div class="manual-header">
+        <h3><i class="fas fa-keyboard"></i> Entrega Manual</h3>
+        <button class="close-btn" id="closeManualBtn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="manual-body">
+        <div class="form-group">
+          <label>Cliente</label>
+          <div id="manualClientDisplay" class="client-display-box">
+            <span class="placeholder">Seleccione en Configuración</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="manualLotInput">Número de Lote</label>
+          <div class="input-wrapper">
+            <i class="fas fa-cube"></i>
+            <input type="number" id="manualLotInput" placeholder="Ej: 2645" class="form-input">
+          </div>
+        </div>
+        <button id="submitManualInput" class="btn-primary full-width">
+          <i class="fas fa-check"></i> Procesar
+        </button>
+      </div>
+    </div>
+    <div id="manualOverlay" class="modal-overlay" style="display: none;"></div>
+
+    <!-- Modal Filtros Historial -->
+    <div id="filterModal" class="filter-modal" style="display: none;">
+      <div class="filter-modal-header">
+        <h3><i class="fas fa-filter"></i> Filtros</h3>
+        <button class="close-btn" id="closeFilterModal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="filter-modal-body">
+        <div class="filter-group">
+          <label>Rango Fechas</label>
+          <div class="input-wrapper">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="text" id="filterDateRange" class="form-input" placeholder="Seleccionar...">
+          </div>
+        </div>
+        <div class="filter-group">
+          <label>Tipo</label>
+          <div class="toggle-group">
+            <label class="toggle-option">
+              <input type="radio" name="filterType" value="all" checked>
+              <span>Todos</span>
+            </label>
+            <label class="toggle-option">
+              <input type="radio" name="filterType" value="factura">
+              <span>Facturas</span>
+            </label>
+            <label class="toggle-option">
+              <input type="radio" name="filterType" value="remision">
+              <span>Remisiones</span>
+            </label>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="filter-group half">
+            <label>Estado</label>
+            <select id="filterStatus" class="form-select">
+              <option value="">Todos</option>
+              <option value="ENTREGADO">Entregado</option>
+              <option value="PENDIENTE">Pendiente</option>
+            </select>
+          </div>
+          <div class="filter-group half">
+            <label>Cliente</label>
+            <select id="filterClient" class="form-select">
+              <option value="">Todos</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label>Proveedor</label>
+          <select id="filterProvider" class="form-select">
+            <option value="">Todos</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para imagen completa -->
+    <div id="ih3Modal" class="ih3-modal" style="display: none;">
+      <span class="close-modal" onclick="cerrarImagenCompleta()">&times;</span>
+      <img class="ih3-modal-img" src="" alt="Comprobante">
+    </div>
+
+    <!-- Virtual Numeric Keypad Modal -->
+    <div id="virtualKeypadModal" class="virtual-keypad-modal" style="display: none;">
+      <div class="keypad-content">
+        <div class="keypad-header">
+          <span class="keypad-title">Ingresar Lote</span>
+          <button class="close-keypad-btn" id="closeKeypadBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="keypad-display" id="keypadDisplay"></div>
+        <div class="keypad-grid">
+          <button class="key-btn" data-key="1">1</button>
+          <button class="key-btn" data-key="2">2</button>
+          <button class="key-btn" data-key="3">3</button>
+          <button class="key-btn" data-key="4">4</button>
+          <button class="key-btn" data-key="5">5</button>
+          <button class="key-btn" data-key="6">6</button>
+          <button class="key-btn" data-key="7">7</button>
+          <button class="key-btn" data-key="8">8</button>
+          <button class="key-btn" data-key="9">9</button>
+          <button class="key-btn key-action key-clear" data-key="clear"><i class="fas fa-trash-alt"></i></button>
+          <button class="key-btn" data-key="0">0</button>
+          <button class="key-btn key-action key-backspace" data-key="backspace"><i
+              class="fas fa-backspace"></i></button>
+          <button class="key-btn key-submit" data-key="enter" style="grid-column: span 3;">CONFIRMAR <i
+              class="fas fa-check"></i></button>
+        </div>
+      </div>
+      <div class="keypad-overlay" id="keypadOverlay"></div>
+    </div>
+
+    <!-- Modal Admin Usuarios -->
+    <div id="userAdminModal" class="user-admin-modal">
+      <div class="user-admin-header">
+        <h3><i class="fas fa-users-cog"></i> Usuarios</h3>
+        <button class="close-btn" onclick="closeUserAdmin()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="user-admin-toolbar">
+        <button class="btn-add-user" onclick="openCreateUserModal()">
+          <i class="fas fa-user-plus"></i> Nuevo
+        </button>
+      </div>
+      <div class="user-list-container" id="userListContainer"></div>
+    </div>
+    <div id="userAdminOverlay" class="modal-overlay" style="display: none;" onclick="closeUserAdmin()"></div>
+
+    <!-- Modal Formulario Usuario -->
+    <div id="userModalOverlay" class="user-form-modal-overlay">
+      <div class="user-form-modal">
+        <div class="user-form-header">
+          <h3 id="userFormTitle">Nuevo Usuario</h3>
+          <button class="close-btn" onclick="closeUserFormModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="userForm">
+          <div class="user-form-body">
+            <div class="form-group">
+              <label>ID</label>
+              <div class="form-input-wrapper">
+                <i class="fas fa-id-card"></i>
+                <input type="text" id="userId" class="form-input" required placeholder="Cédula">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nombre</label>
+              <div class="form-input-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="userName" class="form-input" required placeholder="Nombre">
+              </div>
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>Rol</label>
+                <select id="userRole" class="form-select" required>
+                  <option value="ADMIN">Admin</option>
+                  <option value="MODERATOR">Moderator</option>
+                  <option value="USER">User</option>
+                  <option value="GUEST">Guest</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Contraseña</label>
+                <div class="form-input-wrapper">
+                  <i class="fas fa-lock"></i>
+                  <input type="text" id="userPassword" class="form-input" required placeholder="Contraseña">
+                </div>
+              </div>
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>Email</label>
+                <div class="form-input-wrapper">
+                  <i class="fas fa-envelope"></i>
+                  <input type="email" id="userEmail" class="form-input" placeholder="correo@ejemplo.com">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <div class="form-input-wrapper">
+                  <i class="fas fa-phone"></i>
+                  <input type="tel" id="userPhone" class="form-input" placeholder="Celular">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="user-form-footer">
+            <button type="button" class="btn-cancel" onclick="closeUserFormModal()">Cancelar</button>
+            <button type="submit" class="btn-save" id="saveUserBtn">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Reporte Detallado -->
+    <div id="reportDetailedModal" class="report-modal" style="display: none;">
+      <div class="report-header">
+        <div class="report-title">
+          <h2><i class="fas fa-chart-line"
+              style="color: var(--primary); margin-right: 10px; font-size: 1.1em;"></i>Resumen Diario</h2>
+          <div class="report-header-controls">
+            <div class="report-date-selector">
+              <i class="fas fa-calendar-day"></i>
+              <input type="text" id="reportDateRange" placeholder="Seleccionar fecha...">
+            </div>
+            <div id="reportAdminActions" style="display: flex; gap: 8px; align-items: center;"></div>
+          </div>
+        </div>
+        <button class="report-close-btn" onclick="document.getElementById('reportDetailedModal').style.display='none'">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="report-tabs">
+        <button class="report-tab-btn active" data-tab="delivery">
+          <i class="fas fa-truck"></i> Delivery
+        </button>
+        <button class="report-tab-btn" data-tab="income">
+          <i class="fas fa-file-invoice-dollar"></i> Income
+        </button>
+        <button class="report-tab-btn" data-tab="picking">
+          <i class="fas fa-clipboard-list"></i> Picking
+        </button>
+      </div>
+      <div class="report-body">
+        <div id="reportContentArea">
+          <!-- Se llena dinámicamente -->
+          <div style="text-align: center; padding: 40px; color: var(--text-tertiary);">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p>Cargando reporte...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================
+         LÓGICA DEL SISTEMA (JS MODULAR)
+         ========================================= -->
+
+    <!-- Core: Datos y Audio -->
+    <!-- config.js se movió al <head> para el branding dinámico -->
+    <script src="js/core/database.js"></script>
+    <script src="js/core/audio.js"></script>
+    <script src="js/core/auth.js"></script>
+    <script src="js/core/main_logic.js"></script>
+    <script src="js/core/app_init.js"></script>
+
+    <!-- UI: Interfaz y Renderizado -->
+    <script src="js/ui/interfaz.js"></script>
+    <script src="js/ui/renderizado.js"></script>
+
+    <!-- Modules: Funcionalidad Específica -->
+    <script src="js/modules/notifications.js"></script>
+    <script src="js/modules/scanner_camera.js"></script>
+    <script src="js/modules/scanner_qr_lib.js"></script>
+    <script src="js/modules/scanner_logic.js"></script>
+    <script src="js/modules/history.js"></script>
+    <script src="js/modules/upload_siesa.js"></script>
+    <script src="js/modules/upload_queue.js"></script>
+    <script src="js/modules/soportes_grid.js"></script>
+    <script src="js/modules/soportes_grid_init.js"></script>
+    <script src="js/modules/admin.js"></script>
+
+    <!-- Service Worker -->
+    <script src="sw.js"></script>
+
+    <!-- MODAL DE FILTROS PARA SOPORTES -->
+    <div id="soportesFilterModal" class="soportes-filter-modal" style="display: none;">
+      <div class="filter-modal-content">
+        <div class="filter-modal-header">
+          <h4><i class="fas fa-filter"></i> Filtros Avanzados</h4>
+          <div style="display: flex; gap: 4px; align-items: center;">
+            <button id="resetFilterBtn" class="close-filters-btn" title="Reiniciar Filtros" style="font-size: 1rem;">
+              <i class="fas fa-undo"></i>
+            </button>
+            <button id="closeSoportesFiltersBtn" class="close-filters-btn"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+        <div class="filter-modal-body">
+
+          <div class="filter-group">
+            <label><i class="fas fa-calendar-alt"></i> Rango de Fechas</label>
+            <div class="date-input-container">
+              <input type="text" id="soportesDateFilter" placeholder="Seleccionar fechas..." readonly>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label><i class="fas fa-user-tie"></i> Cliente</label>
+            <select id="kpiFilterClient" class="form-select-premium">
+              <option value="">Todos los Clientes</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label><i class="fas fa-truck"></i> Proveedor</label>
+            <select id="kpiFilterProvider" class="form-select-premium">
+              <option value="">Todos los Proveedores</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div id="soportesFilterOverlay" class="filter-modal-overlay" style="display: none;"></div>
+
+</body>
+
+</html>

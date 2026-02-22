@@ -1,0 +1,469 @@
+/* =========================================
+   CONTENIDO / RESULTADOS - MOBILE ONLY
+   ========================================= */
+
+/* Tarjeta Principal */
+.result-item {
+  padding-bottom: 100px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cabecera de la Tarjeta */
+.result-header-main {
+  padding: 16px 16px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.document-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.animated-result-icon {
+  margin-right: 6px;
+  color: var(--primary);
+  font-size: 12px;
+  animation: subtleFloat 3s ease-in-out infinite;
+}
+
+.document-id {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+
+/* Grid de detalles principales */
+.main-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.detail-box {
+  background: var(--background);
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+}
+
+.detail-box-label {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.detail-box-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Lista SIESA */
+.siesa-list-header {
+  padding: 16px 16px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-count {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Siesa Item Container */
+.siesa-item {
+  margin: 0 12px 12px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Solapa de Estado */
+.status-solapa {
+  height: 4px;
+  width: 100%;
+  background: var(--text-tertiary);
+}
+
+/* Estados Visuales */
+.siesa-item.status-entregado .status-solapa {
+  background: var(--success);
+}
+
+.siesa-item.status-entregado {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.siesa-item.status-pendiente .status-solapa {
+  background: var(--warning);
+}
+
+.siesa-item.status-pendiente {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.siesa-item.status-nofacturado .status-solapa {
+  background: var(--danger);
+}
+
+.siesa-item.status-nofacturado {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+/* Estados Visuales - Animaciones Unificadas */
+@keyframes pulse-bg-blue {
+  0% {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+  }
+
+  50% {
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  100% {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+  }
+}
+
+@keyframes pulse-bg-red {
+  0% {
+    background-color: #fef2f2;
+    border-color: #fca5a5;
+  }
+
+  50% {
+    background-color: #fee2e2;
+    border-color: #f87171;
+  }
+
+  100% {
+    background-color: #fef2f2;
+    border-color: #fca5a5;
+  }
+}
+
+@keyframes pulse-solapa {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* PROCESSING (AZUL) */
+.siesa-item.status-processing .status-solapa {
+  background: var(--primary);
+  animation: pulse-solapa 1.5s infinite ease-in-out;
+}
+
+.siesa-item.status-processing {
+  animation: pulse-bg-blue 1.5s infinite ease-in-out;
+}
+
+/* DELETING (ROJO) */
+.siesa-item.status-deleting .status-solapa {
+  background: var(--danger);
+  animation: pulse-solapa 1.5s infinite ease-in-out;
+}
+
+.siesa-item.status-deleting {
+  animation: pulse-bg-red 1.5s infinite ease-in-out;
+}
+
+.status-icon-only.deleting {
+  color: var(--danger);
+}
+
+/* Header de Factura */
+.card-header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.factura-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.factura-id {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  margin-bottom: 4px;
+}
+
+.factura-meta-line {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-separator {
+  margin: 0 4px;
+  color: var(--text-tertiary);
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Iconos de Estado */
+.status-icon-only {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.status-icon-only.success {
+  color: var(--success-dark);
+}
+
+.status-icon-only.processing {
+  color: var(--primary);
+}
+
+.status-icon-only.error {
+  color: var(--danger);
+}
+
+/* PREMIUM SPINNER */
+.premium-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(0, 0, 0, 0.1);
+  border-left-color: currentColor;
+  border-radius: 50%;
+  animation: premium-spin 0.8s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+}
+
+@keyframes premium-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Botón Miniatura */
+.action-btn-mini {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background: white;
+  color: var(--text-main);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Contextual Button (No Background/Shadow) */
+.action-btn-mini.contextual {
+  background: transparent;
+  box-shadow: none;
+}
+
+.siesa-item.status-pendiente .action-btn-mini {
+  background: transparent;
+  color: var(--warning);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.1);
+}
+
+.action-btn-mini:active {
+  transform: scale(0.9);
+}
+
+.card-chevron {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  transition: transform 0.3s;
+  padding: 8px;
+}
+
+/* Estado Expandido */
+.siesa-item.expanded {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transform: scale(1.01);
+  z-index: 10;
+  background: var(--surface) !important;
+}
+
+.siesa-item.expanded .card-chevron {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+
+/* Contenido Expandido */
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  background: var(--background);
+}
+
+.siesa-item.expanded .collapsible-content {
+  max-height: 800px;
+  border-top: 1px solid var(--border-light);
+}
+
+.details-grid {
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mini-detail {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.mini-label {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
+}
+
+.mini-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-main);
+  word-break: break-all;
+}
+
+/* Grid adaptativo */
+.details-grid.adaptive {
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.mini-detail.full-width {
+  grid-column: 1 / -1;
+}
+
+.mini-detail.full-width .mini-value {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+  max-height: 80px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+/* Imágenes Thumbnails */
+.ih3-thumbnail-container {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.ih3-thumbnail {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.ih3-thumbnail:active {
+  transform: scale(1.05);
+}
+
+/* Errors */
+.error {
+  color: var(--danger);
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}

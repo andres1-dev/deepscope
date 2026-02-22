@@ -1,0 +1,279 @@
+/* =========================================
+   MÓDULO DE SOPORTES / ENTREGAS - MOBILE FIRST
+   ========================================= */
+
+/* Modal de Soportes */
+.soportes-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 10005;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.soportes-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  flex-shrink: 0;
+}
+
+.soportes-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.soportes-header h3 i {
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.soportes-toolbar {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--surface);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.soportes-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.soportes-filters .date-filter {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.soportes-filters .date-filter i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.soportes-filters .date-filter input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: white;
+  color: var(--text-main);
+  outline: none;
+}
+
+.soportes-filters .date-filter input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.soportes-table-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f8fafc;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Loading overlay */
+.soportes-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+}
+
+.soportes-loading i {
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.soportes-loading span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* DataTable Custom Styles */
+#soportesTable {
+  width: 100% !important;
+  font-size: 0.8rem;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+#soportesTable thead th {
+  background: #f1f5f9;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+#soportesTable tbody td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+#soportesTable tbody tr:hover {
+  background: #f8fafc;
+}
+
+#soportesTable tbody td:first-child {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .soportes-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .soportes-filters {
+    flex-direction: column;
+  }
+  
+  .soportes-filters .date-filter {
+    width: 100%;
+  }
+  
+  #soportesTable {
+    font-size: 0.75rem;
+  }
+  
+  #soportesTable td:nth-child(7) {
+    display: none; /* Ocultar NIT en móvil */
+  }
+}
+
+/* Botones de acción en tabla */
+.btn-xs {
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.btn-xs.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-xs.btn-secondary {
+  background: white;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-xs:active {
+  transform: scale(0.95);
+}
+
+/* Badges de estado en tabla */
+.status-badge-small {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Footer del modal */
+.soportes-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Overlay */
+.soportes-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10004;
+}
+
+/* Empty state */
+.soportes-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.soportes-empty i {
+  font-size: 3rem;
+  color: var(--border);
+  margin-bottom: 16px;
+}
+
+.soportes-empty h4 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.soportes-empty p {
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+}
