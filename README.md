@@ -28,7 +28,7 @@ Tome decisiones basadas en datos, no en suposiciones:
 - **Evidencia Digital**: Gestión de soportes fotográficos con compresión inteligente para una auditoría impecable.
 
 ### 4. Seguridad de Grado Bancario
-Integramos **WebAuthn (Biometría)** para garantizar que solo el personal autorizado acceda a la información sensible de sus clientes y facturación.
+Integramos **WebAuthn (Biometría)** para garantizar que solo el personal autorizado acceda a la información.
 
 ---
 
@@ -44,10 +44,10 @@ Integramos **WebAuthn (Biometría)** para garantizar que solo el personal autori
 
 DeepScope es la base de un sistema WMS completo. Los siguientes módulos de alto rendimiento están disponibles bajo licenciamiento **Premium**:
 
-- **[PAGADO] Módulo de Geofencing**: Validación de entrega basada en coordenadas GPS exactas.
-- **[PAGADO] Trazabilidad Multimodal**: Seguimiento de activos a través de múltiples transportistas.
-- **[PAGADO] Inteligencia Predictiva**: Algoritmos que predicen retrasos basados en datos históricos.
-- **[PAGADO] Integración SAP/Oracle/Siesa**: Conectores bidireccionales nativos para sincronización de inventarios ERP.
+- **Módulo de Geofencing**: Validación de entrega basada en coordenadas GPS exactas, y mapeo de areas logisticas desde maestro de almacen.
+- **Trazabilidad Multimodal**: Seguimiento hisorico a través de múltiples procesos en tiempo real.
+- **Inteligencia Predictiva**: Algoritmos que predicen retrasos basados en datos históricos atravez de su IA integrada.
+- **Integración SAP/Oracle/Siesa**: Conectores bidireccionales nativos para sincronización de inventarios ERP.
 
 ---
 
