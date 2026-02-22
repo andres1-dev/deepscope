@@ -3,220 +3,238 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>404 - Sistema Fuera de Ruta | DeepScope</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Página No Encontrada | DeepScope</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text: #0f172a;
-            --text-secondary: #64748b;
-            --border: #e2e8f0;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --github-black: #0d1117;
+            --github-gray: #161b22;
+            --github-border: #30363d;
+            --github-text: #f0f6fc;
+            --github-text-secondary: #8b949e;
+            --github-blue: #58a6ff;
+            --github-green: #3fb950;
+            --github-purple: #bc8cff;
+            --game-orange: #f78166;
+            --premium-blue: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         }
 
         body {
-            background: var(--background);
-            color: var(--text);
+            background: var(--github-black);
+            color: var(--github-text);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .github-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--github-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--github-border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.03;
+            z-index: -1;
         }
 
         .container {
-            max-width: 450px;
-            width: 100%;
+            max-width: 500px;
+            width: 90%;
             text-align: center;
-            background: var(--surface);
-            padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
+            z-index: 10;
+            padding: 2rem;
         }
 
-        .icon-box {
+        .app-logo {
+            margin-bottom: 2rem;
+        }
+
+        .app-logo img {
             width: 80px;
             height: 80px;
-            background: #eff6ff;
-            color: var(--primary);
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin: 0 auto 24px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
         .error-code {
-            font-size: 64px;
-            font-weight: 800;
-            color: var(--text);
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        p {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 32px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 14px;
+            font-size: 4.5rem;
             font-weight: 600;
-            width: 100%;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            color: var(--github-text);
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
         }
 
-        .btn:hover {
-            background: var(--primary-dark);
+        .error-title {
+            font-size: 1.4rem;
+            color: var(--github-text);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .error-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--github-text-secondary);
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .whatsapp-icon {
+            color: var(--github-blue);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            margin-left: 5px;
+        }
+
+        .whatsapp-icon:hover {
+            color: #4d94e6;
             transform: translateY(-1px);
         }
 
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            font-size: 12px;
-            color: var(--text-secondary);
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0 0.5rem 0;
         }
 
-        .mini-game {
-            margin-top: 24px;
-            padding: 15px;
-            background: #f1f5f9;
-            border-radius: 16px;
-        }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-            max-width: 150px;
-            margin: 10px auto;
-        }
-
-        .cell {
-            aspect-ratio: 1;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+        .github-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 16px;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            background: var(--premium-blue);
+            border: none;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .status {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--text-secondary);
+        .github-button:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .github-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--github-border);
+            color: var(--github-text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .footer strong {
+            color: var(--github-text);
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--github-text-secondary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 8s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-code {
+                font-size: 3.5rem;
+            }
+
+            .error-title {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="github-grid"></div>
+
+    <div class="floating-elements"></div>
+
     <div class="container">
-        <div class="icon-box">
-            <i class="fas fa-route"></i>
+        <div class="app-logo">
+            <img src="icons/icon.svg" alt="DeepScope Logo">
         </div>
+
         <div class="error-code">404</div>
-        <h1>Destino no encontrado</h1>
-        <p>Parece que la ruta solicitada no existe en nuestro manifiesto logístico. Por favor, regresa al panel
-            principal para reanudar la operación.</p>
+        <h1 class="error-title">Ruta No Encontrada</h1>
 
-        <a href="index.html" class="btn">
-            <i class="fas fa-home"></i> Volver al Inicio
-        </a>
+        <p class="error-description">
+            El destino solicitado no existe o ha sido movido fuera de nuestro manifiesto logístico.
+            <a href="https://wa.me/573168007979" class="whatsapp-icon" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </p>
 
-        <div class="mini-game">
-            <div class="status" id="status">Pausa logística: Tres en raya</div>
-            <div class="game-board" id="board">
-                <div class="cell" data-i="0"></div>
-                <div class="cell" data-i="1"></div>
-                <div class="cell" data-i="2"></div>
-                <div class="cell" data-i="3"></div>
-                <div class="cell" data-i="4"></div>
-                <div class="cell" data-i="5"></div>
-                <div class="cell" data-i="6"></div>
-                <div class="cell" data-i="7"></div>
-                <div class="cell" data-i="8"></div>
-            </div>
-            <button onclick="reset()"
-                style="border:none; background:none; color:var(--primary); font-size:11px; font-weight:700; cursor:pointer;">REINICIAR</button>
+        <div class="action-buttons">
+            <a href="index.html" class="github-button">
+                <i class="fas fa-home"></i> Volver a la Terminal
+            </a>
         </div>
 
         <div class="footer">
-            <strong>DeepScope v7.3</strong><br>
-            Logística Inteligente & Trazabilidad
+            <p><strong>DeepScope v7.3</strong> · Sistema de Inteligencia Logística</p>
+            <p>Desarrollado por Andrés Mendoza</p>
+            <p>© 2026 · Supported by GrupoTDM</p>
         </div>
     </div>
 
     <script>
-        let p = 'X', b = Array(9).fill(''), active = true;
-        const status = document.getElementById('status');
-        const cells = document.querySelectorAll('.cell');
-
-        function move(i, cell) {
-            if (b[i] || !active) return;
-            b[i] = p;
-            cell.innerText = p;
-            cell.style.color = p === 'X' ? '#2563eb' : '#ef4444';
-
-            if (check()) {
-                status.innerText = '¡Gana ' + p + '!';
-                active = false;
-            } else if (!b.includes('')) {
-                status.innerText = 'Empate';
-                active = false;
-            } else {
-                p = p === 'X' ? 'O' : 'X';
-                status.innerText = 'Turno de ' + p;
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.floating-elements');
+            for (let i = 0; i < 20; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-element';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDelay = Math.random() * 10 + 's';
+                el.style.animationDuration = (Math.random() * 12 + 8) + 's';
+                container.appendChild(el);
             }
-        }
-
-        function check() {
-            const wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-            return wins.some(w => b[w[0]] && b[w[0]] == b[w[1]] && b[w[0]] == b[w[2]]);
-        }
-
-        function reset() {
-            b.fill(''); p = 'X'; active = true;
-            status.innerText = 'Pausa logística: Tres en raya';
-            cells.forEach(c => c.innerText = '');
-        }
-
-        cells.forEach(c => c.addEventListener('click', () => move(c.dataset.i, c)));
+        });
     </script>
 </body>
 
