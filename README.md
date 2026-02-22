@@ -52,8 +52,8 @@ DeepScope es la base de un sistema WMS completo. Los siguientes módulos de alto
 ---
 
 ## 📈 Conclusión
-**DeepScope** es la inversión estratégica para el CEO que busca transformar su centro de costos logísticos en una ventaja competitiva tecnológica. Eficiencia, control y transparencia total en la palma de su mano.
+**DeepScope** es la inversión estratégica para transformar su centro de costos logísticos en una ventaja competitiva tecnológica. Eficiencia, control y transparencia total en la palma de su mano.
 
 ---
 **Desarrollado por Andrés Mendoza**
-*© 2026 · Innovación con el respaldo de GrupoTDM*
+*© 2026 · Creado para el GrupoTDM*
