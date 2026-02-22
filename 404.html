@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>404 - Sistema Fuera de Ruta | DeepScope</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            background: var(--surface);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 24px;
+        }
+
+        .error-code {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .mini-game {
+            margin-top: 24px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 16px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            max-width: 150px;
+            margin: 10px auto;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .status {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="icon-box">
+            <i class="fas fa-route"></i>
+        </div>
+        <div class="error-code">404</div>
+        <h1>Destino no encontrado</h1>
+        <p>Parece que la ruta solicitada no existe en nuestro manifiesto logístico. Por favor, regresa al panel
+            principal para reanudar la operación.</p>
+
+        <a href="index.html" class="btn">
+            <i class="fas fa-home"></i> Volver al Inicio
+        </a>
+
+        <div class="mini-game">
+            <div class="status" id="status">Pausa logística: Tres en raya</div>
+            <div class="game-board" id="board">
+                <div class="cell" data-i="0"></div>
+                <div class="cell" data-i="1"></div>
+                <div class="cell" data-i="2"></div>
+                <div class="cell" data-i="3"></div>
+                <div class="cell" data-i="4"></div>
+                <div class="cell" data-i="5"></div>
+                <div class="cell" data-i="6"></div>
+                <div class="cell" data-i="7"></div>
+                <div class="cell" data-i="8"></div>
+            </div>
+            <button onclick="reset()"
+                style="border:none; background:none; color:var(--primary); font-size:11px; font-weight:700; cursor:pointer;">REINICIAR</button>
+        </div>
+
+        <div class="footer">
+            <strong>DeepScope v7.3</strong><br>
+            Logística Inteligente & Trazabilidad
+        </div>
+    </div>
+
+    <script>
+        let p = 'X', b = Array(9).fill(''), active = true;
+        const status = document.getElementById('status');
+        const cells = document.querySelectorAll('.cell');
+
+        function move(i, cell) {
+            if (b[i] || !active) return;
+            b[i] = p;
+            cell.innerText = p;
+            cell.style.color = p === 'X' ? '#2563eb' : '#ef4444';
+
+            if (check()) {
+                status.innerText = '¡Gana ' + p + '!';
+                active = false;
+            } else if (!b.includes('')) {
+                status.innerText = 'Empate';
+                active = false;
+            } else {
+                p = p === 'X' ? 'O' : 'X';
+                status.innerText = 'Turno de ' + p;
+            }
+        }
+
+        function check() {
+            const wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+            return wins.some(w => b[w[0]] && b[w[0]] == b[w[1]] && b[w[0]] == b[w[2]]);
+        }
+
+        function reset() {
+            b.fill(''); p = 'X'; active = true;
+            status.innerText = 'Pausa logística: Tres en raya';
+            cells.forEach(c => c.innerText = '');
+        }
+
+        cells.forEach(c => c.addEventListener('click', () => move(c.dataset.i, c)));
+    </script>
+</body>
+
+</html>
