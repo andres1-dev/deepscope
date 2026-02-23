@@ -23,7 +23,7 @@
 
 /* Header */
 .soportes-grid-header {
-  padding: 16px 20px;
+  padding: calc(16px + env(safe-area-inset-top)) 20px 16px;
   background: white;
   border-bottom: 1px solid #e2e8f0;
   display: flex;

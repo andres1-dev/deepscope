@@ -383,7 +383,7 @@
 }
 
 .queue-modal-header {
-  padding: 16px 20px;
+  padding: calc(16px + env(safe-area-inset-top)) 20px 16px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -407,9 +407,9 @@
 }
 
 .queue-close-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   border: none;
   background: var(--background);
   color: var(--text-secondary);
@@ -821,6 +821,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: env(safe-area-inset-top);
 }
 
 .camera-view {
@@ -1094,7 +1095,7 @@
 
 .settings-header,
 .manual-header {
-  padding: 24px 28px;
+  padding: calc(24px + env(safe-area-inset-top)) 28px 20px;
   background: var(--surface);
   border-bottom: 2px solid var(--border-light);
   display: flex;
@@ -1135,9 +1136,9 @@
   color: var(--text-secondary);
   font-size: 1.2rem;
   cursor: pointer;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -23,7 +23,7 @@
 #uploadSiesaView .app-header {
   background: var(--primary);
   color: white;
-  padding: 24px 20px;
+  padding: calc(24px + env(safe-area-inset-top)) 20px 24px;
   text-align: center;
 }
 

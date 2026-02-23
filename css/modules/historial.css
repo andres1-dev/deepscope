@@ -12,6 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: env(safe-area-inset-top);
     margin-bottom: 16px;
     flex-wrap: wrap;
     gap: 8px;

@@ -20,7 +20,7 @@
 }
 
 .soportes-header {
-  padding: 16px 20px;
+  padding: calc(16px + env(safe-area-inset-top)) 20px 16px;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
@@ -176,21 +176,22 @@
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .soportes-filters {
     flex-direction: column;
   }
-  
+
   .soportes-filters .date-filter {
     width: 100%;
   }
-  
+
   #soportesTable {
     font-size: 0.75rem;
   }
-  
+
   #soportesTable td:nth-child(7) {
-    display: none; /* Ocultar NIT en móvil */
+    display: none;
+    /* Ocultar NIT en móvil */
   }
 }
 
