@@ -20,12 +20,13 @@
       "src": "icons/icon.svg",
       "sizes": "1600x1600 any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/apple-touch-icon.svg",
       "sizes": "1024x1024",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ],
   "related_applications": [],

@@ -1,9 +1,8 @@
 // Service Worker para App - Versión optimizada para PWA
-// Leer configuración de la app
 importScripts('js/core/config.js');
 
 // CORREGIDO: Eliminadas notificaciones duplicadas
-const CACHE_NAME = `${CONFIG.APP_NAME}-v11.1`; // Network-First Strategy 100% Online
+const CACHE_NAME = `${CONFIG.APP_NAME}-v12.1`; // Network-First Strategy 100% Online
 
 const BASE = (new URL('.', self.location)).href;
 
