@@ -44,12 +44,9 @@ const RELATIVE_ASSETS = [
   'js/modules/notifications.js',
   'js/modules/admin.js',
   /* Icons */
-  'icons/icon-192.png',
-  'icons/icon-256.png',
-  'icons/icon-384.png',
-  'icons/icon-512.png',
-  'icons/icon-1024.png',
-  'icons/favicon.ico'
+  'icons/icon.svg',
+  'icons/apple-touch-icon.svg',
+  'icons/github.svg'
 ];
 
 const EXTERNAL_ASSETS = [
