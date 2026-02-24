@@ -31,7 +31,7 @@ function processQRCodeParts(parts) {
             // Verificar coincidencia (permitiendo variaciones menores como dígito de verificación)
             // Si ninguno contiene al otro, entonces son diferentes
             if (!scanNitDigits.includes(requiredNitDigits) && !requiredNitDigits.includes(scanNitDigits)) {
-                showError(`${documento}`, `⚠️ ENTREGA BLOQUEADA<br>El paquete no pertenece a ${USER_SETTINGS.selectedClient}`);
+                showError(`${documento}`, `ENTREGA BLOQUEADA<br>El paquete no pertenece a ${USER_SETTINGS.selectedClient}`);
                 playErrorSound();
                 return;
             }

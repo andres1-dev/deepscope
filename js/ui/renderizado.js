@@ -233,11 +233,42 @@ function formatSiesaValue(val) {
 
 function showError(barcode, message = "Código no encontrado") {
     const resultsDiv = document.getElementById('results');
-    if (resultsDiv) {
-        resultsDiv.innerHTML = `
-        <div class="error">
-        <i class="fas fa-times-circle"></i> ${message}: <strong>${barcode}</strong>
+    if (!resultsDiv) return;
+
+    // Detectar si el mensaje tiene un título separado por emoji o formato
+    let title = "Error de Escaneo";
+    let text = message;
+    let iconClass = "fa-circle-exclamation";
+
+    if (message.includes('BLOQUEADA')) {
+        title = "Entrega Bloqueada";
+        iconClass = "fa-triangle-exclamation";
+        // Limpiar el texto si viene con el formato antiguo
+        text = message.replace(/⚠️/g, '').replace('ENTREGA BLOQUEADA<br>', '').trim();
+    } else if (message.includes('no encontrado')) {
+        title = "Registro No Encontrado";
+        iconClass = "fa-circle-info";
+    } else if (message.includes('no válido')) {
+        title = "Formato Inválido";
+        iconClass = "fa-qrcode";
+    }
+
+    resultsDiv.innerHTML = `
+        <div class="error-container">
+            <div class="error-card-premium">
+                <div class="error-icon-wrapper">
+                    <i class="fas ${iconClass}"></i>
+                </div>
+                <div class="error-content">
+                    <h3 class="error-title">${title}</h3>
+                    <p class="error-message">${text}</p>
+                    <div class="error-barcode-tag">
+                        <i class="fas fa-barcode"></i> ${barcode}
+                    </div>
+                </div>
+            </div>
         </div>
     `;
-    }
 }
+
+
