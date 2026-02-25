@@ -20,7 +20,7 @@
       "src": "icons/apple-touch-icon.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "icons/icon.svg",
