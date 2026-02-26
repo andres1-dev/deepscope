@@ -305,10 +305,14 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="submitBtn" class="btn-login">
+                    <button type="submit" id="submitBtn" class="btn-login" style="margin-bottom: 20px;">
                         <span id="btnText">Entrar</span>
                         <div class="spinner" id="spinner"></div>
                     </button>
+
+                    <div style="text-align: center;">
+                        <a href="#" class="forgot-link" id="recoverLink">¿Olvidaste tu contraseña?</a>
+                    </div>
                 </div>
 
                 <!-- Botón de Biometría -->
@@ -319,10 +323,6 @@
 
                 <a href="#" id="usePasswordLink" class="backup-link" style="display: none;">Usar contraseña</a>
             </form>
-
-            <div class="login-footer-compact">
-                <a href="#" class="forgot-link" id="recoverLink">¿Olvidaste tu contraseña?</a>
-            </div>
         </div>
     </div>
 
@@ -380,15 +380,18 @@
         // Switch de Vuelta a Manual
         document.getElementById('usePasswordLink').addEventListener('click', (e) => {
             e.preventDefault();
+
+            // Ocultar modo biométrico por completo
+            biometricBtn.style.display = 'none';
+            e.target.style.display = 'none';
+
+            // Mostrar campos manuales y recuperación
             document.getElementById('manualFields').classList.remove('hidden-form');
 
             // REACTIVAR INPUTS
             userIdInput.disabled = false;
             passwordInput.disabled = false;
 
-            biometricBtn.classList.remove('biometric-active');
-            biometricBtn.style.marginTop = '15px';
-            e.target.style.display = 'none';
             setTimeout(() => userIdInput.focus(), 100);
         });
 
