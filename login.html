@@ -77,6 +77,8 @@
             width: 100%;
             max-width: 360px;
             background: transparent;
+            border: none;
+            box-shadow: none;
             padding: 28px 20px;
         }
 
@@ -231,14 +233,16 @@
         }
 
         .btn-login.biometric-active {
-            height: 120px;
+            height: auto;
+            min-height: 120px;
             flex-direction: column;
             gap: 15px;
-            background: white;
+            background: transparent;
             color: #2563eb;
-            border: 2px solid #e2e8f0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            font-size: 1.1rem;
+            border: none;
+            box-shadow: none;
+            font-size: 1.15rem;
+            padding: 20px;
         }
 
         .btn-login.biometric-active i {
@@ -391,41 +395,35 @@
         biometricBtn.addEventListener('click', async () => {
             try {
                 const credentialIdB64 = localStorage.getItem('biometricId');
-                if (!credentialIdB64) return;
+                const userId = localStorage.getItem('userIdForBiometrics');
+
+                if (!credentialIdB64 || !userId) {
+                    showError("No se encontró registro biométrico local. Inicie con contraseña primero.");
+                    return;
+                }
 
                 errorDiv.style.display = 'none';
                 biometricBtn.disabled = true;
 
-                // Reto aleatorio (en prod debería venir del servidor)
+                // Disparar autenticación del dispositivo
                 const challenge = new Uint8Array(32);
                 window.crypto.getRandomValues(challenge);
-
                 const credentialId = Uint8Array.from(atob(credentialIdB64), c => c.charCodeAt(0));
 
                 const assertion = await navigator.credentials.get({
                     publicKey: {
                         challenge: challenge,
-                        allowCredentials: [{
-                            id: credentialId,
-                            type: 'public-key',
-                            transports: ['internal'],
-                        }],
-                        userVerification: 'required',
-                        timeout: 60000,
+                        allowCredentials: [{ id: credentialId, type: 'public-key', transports: ['internal'] }],
+                        userVerification: 'required'
                     }
                 });
 
                 if (assertion) {
-                    // Enviar autenticación al servidor
-                    // Por simplicidad en GAS, enviaremos el ID del usuario asociado previamente
-                    const savedId = localStorage.getItem('userIdForBiometrics');
-                    if (savedId) {
-                        performBiometricAutoLogin(savedId);
-                    }
+                    console.log("Validación bio-local exitosa. Autenticando servidor...");
+                    await performBiometricAutoLogin(userId);
                 }
             } catch (err) {
                 console.error("Biometric Login Error:", err);
-                showError("No se pudo autenticar con biometría");
                 biometricBtn.disabled = false;
             }
         });

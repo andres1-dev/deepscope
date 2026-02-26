@@ -21,6 +21,9 @@ const CONFIG = {
     ACTIVITY_KEY: 'last_activity_timestamp'
 };
 
+// Asegurar que CONFIG sea accesible globalmente en todos los scripts
+window.CONFIG = CONFIG;
+
 // Mapeo de clientes a NIT (Movido aquí para acceso global)
 const CLIENTS_MAP = {
     "INVERSIONES URBANA SAS": "901920844",
