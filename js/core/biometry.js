@@ -109,19 +109,19 @@ const BIOMETRY = {
         return 'generic';
     },
 
-    // Obtener el icono correspondiente al tipo
-    getIconForType() {
+    // Obtener el SVG correspondiente al tipo (Nivel Profesional)
+    getSVGForType() {
         const type = this.getAuthenticatorType();
-        switch (type) {
-            case 'faceid': return 'fas fa-face-viewfinder'; // Requiere FA6 o fallback
-            case 'touchid':
-            case 'fingerprint': return 'fas fa-fingerprint';
-            case 'key': return 'fas fa-key';
-            default: return 'fas fa-user-shield';
-        }
+        const icons = {
+            faceid: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;"><path d="M7 3H5C3.89543 3 3 3.89543 3 5V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 3H19C20.1046 3 21 3.89543 21 5V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 17V19C21 20.1046 20.1046 21 19 21H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 17V19C3 20.1046 3.89543 21 5 21H7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 10V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 10V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 11V14H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+            fingerprint: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;"><path d="M12 11C12 11 12.5 10 14 10C15.5 10 17 11.5 17 13.5V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 13V13.5C9 15.433 10.567 17 12.5 17C14.433 17 16 15.433 16 13.5V11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11C5 7.13401 8.13401 4 12 4C15.866 4 19 7.13401 19 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 20C10.3431 20 9 18.6569 9 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+            key: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;"><path d="M21 2L11 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="15.5" r="5.5" stroke="currentColor" stroke-width="2"/><path d="M15.5 7.5L18.5 10.5L22 7L19 4L15.5 7.5Z" fill="currentColor"/></svg>`,
+            generic: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right:10px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/></svg>`
+        };
+        return icons[type] || icons.generic;
     },
 
-    // Obtener etiqueta legible
+    // Mantener etiquetas legibles
     getLabelForType() {
         const type = this.getAuthenticatorType();
         switch (type) {

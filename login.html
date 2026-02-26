@@ -363,11 +363,11 @@
             const hasBiometricId = BIOMETRY.isRegistered();
 
             if (isSupported && hasBiometricId) {
-                // Actualizar Icono y Texto según el dispositivo
-                const iconClass = BIOMETRY.getIconForType();
+                // Actualizar Icono y Texto según el dispositivo (SVG Profesional)
+                const svgIcon = BIOMETRY.getSVGForType();
                 const label = BIOMETRY.getLabelForType();
 
-                biometricBtn.innerHTML = `<i class="${iconClass}"></i><span>Entrar con ${label}</span>`;
+                biometricBtn.innerHTML = `${svgIcon}<span>Entrar con ${label}</span>`;
 
                 // Modo Biométrico Activo: Ocultar campos manuales
                 document.getElementById('manualFields').classList.add('hidden-form');
