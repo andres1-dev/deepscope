@@ -1041,19 +1041,22 @@
     <div id="reportDetailedModal" class="report-modal" style="display: none;">
       <div class="report-header">
         <div class="report-title">
-          <h2><i class="fas fa-chart-line"
-              style="color: var(--primary); margin-right: 10px; font-size: 1.1em;"></i>Resumen Diario</h2>
-          <div class="report-header-controls">
-            <div class="report-date-selector">
-              <i class="fas fa-calendar-day"></i>
-              <input type="text" id="reportDateRange" placeholder="Seleccionar fecha...">
-            </div>
-            <div id="reportAdminActions" style="display: flex; gap: 8px; align-items: center;"></div>
-          </div>
+          <h2><i class="fas fa-chart-pie"></i>Resumen Diario</h2>
         </div>
         <button class="report-close-btn" onclick="document.getElementById('reportDetailedModal').style.display='none'">
           <i class="fas fa-times"></i>
         </button>
+      </div>
+
+      <!-- Barra de filtros debajo del header -->
+      <div class="report-toolbar">
+        <div class="report-header-controls">
+          <div class="report-date-selector">
+            <i class="fas fa-calendar-day"></i>
+            <input type="text" id="reportDateRange" placeholder="Seleccionar fecha...">
+          </div>
+          <div id="reportAdminActions" style="display: flex; gap: 8px; align-items: center;"></div>
+        </div>
       </div>
 
       <div class="report-tabs">

@@ -1259,7 +1259,7 @@ async function showDetailedReport(target, skipUpdate = false) {
         return;
     }
 
-    if (reportTitle) reportTitle.textContent = "Resumen Diario";
+    if (reportTitle) reportTitle.innerHTML = '<i class="fas fa-chart-pie"></i>Resumen Diario';
 
     // Actualizar subtítulo con indicador de carga si aplica
     if (reportSubtitle) {
@@ -1277,99 +1277,73 @@ async function showDetailedReport(target, skipUpdate = false) {
         rDateIcon.title = "Filtro: Día";
     }
 
-    // Lógica de botón Admin para enviar informe
+    // LÓGICA de botón Admin para enviar informe (Botón Flotante)
     const adminActions = document.getElementById('reportAdminActions');
     if (adminActions) {
         adminActions.innerHTML = '';
         const user = typeof currentUser !== 'undefined' ? currentUser : (window.auth && window.auth.user);
+
+        // Eliminar FAB previo si existe
+        const existingFab = document.getElementById('reportFab');
+        if (existingFab) existingFab.remove();
+
         if (user && user.rol === 'ADMIN') {
             const sendBtn = document.createElement('button');
+            sendBtn.id = 'reportFab';
             sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
-            sendBtn.className = 'btn-report-send';
+            sendBtn.className = 'report-fab';
             sendBtn.title = "Enviar informe a grupos";
 
-            // Estilos premium consistentes con el sistema
-            sendBtn.style.cssText = `
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 44px;
-                height: 44px;
-                border: none;
-                border-radius: 14px;
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                color: white;
-                font-size: 1.2rem;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
-                position: relative;
-                overflow: hidden;
-            `;
-
-            // Transición para el icono interno
-            const icon = sendBtn.querySelector('i');
-            if (icon) icon.style.transition = 'all 0.3s ease';
-
-            sendBtn.onmouseover = () => {
-                sendBtn.style.transform = 'translateY(-2px) scale(1.05)';
-                sendBtn.style.boxShadow = '0 6px 15px rgba(16, 185, 129, 0.35)';
-                if (icon) icon.style.transform = 'rotate(-10deg) scale(1.1)';
-            };
-            sendBtn.onmouseout = () => {
-                sendBtn.style.transform = 'translateY(0) scale(1)';
-                sendBtn.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.25)';
-                if (icon) icon.style.transform = 'rotate(0) scale(1)';
-            };
+            // Evento para remover el botón si el modal se cierra
+            const modal = document.getElementById('reportDetailedModal');
+            const observer = new MutationObserver(() => {
+                if (modal.style.display === 'none') {
+                    sendBtn.remove();
+                    observer.disconnect();
+                }
+            });
+            observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
 
             sendBtn.onclick = async (e) => {
                 e.preventDefault();
                 if (window.notificationManager && startDate && !sendBtn.disabled) {
                     const originalHTML = sendBtn.innerHTML;
-                    const originalBg = sendBtn.style.background;
 
                     try {
-                        // Estado: Cargando
                         sendBtn.disabled = true;
-                        sendBtn.style.background = '#64748b'; // Color neutro mientras carga
                         sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        sendBtn.style.transform = 'scale(0.95)';
+                        sendBtn.style.opacity = '0.7';
 
                         const yyyy = startDate.getFullYear();
                         const mm = String(startDate.getMonth() + 1).padStart(2, '0');
                         const dd = String(startDate.getDate()).padStart(2, '0');
                         const dateStr = `${yyyy}-${mm}-${dd}`;
 
-                        console.log("Sending summary for:", dateStr);
-
-                        // Llamar al manager y esperar resultado
                         const result = await window.notificationManager.sendDailySummary(dateStr);
 
-                        // Estado: Éxito
-                        sendBtn.style.background = '#10b981';
                         sendBtn.innerHTML = '<i class="fas fa-check"></i>';
+                        sendBtn.style.background = '#10b981';
 
                         setTimeout(() => {
                             sendBtn.disabled = false;
                             sendBtn.innerHTML = originalHTML;
-                            sendBtn.style.background = originalBg;
-                            sendBtn.style.transform = 'scale(1)';
+                            sendBtn.style.opacity = '1';
                         }, 3000);
 
                     } catch (err) {
                         console.error("Error enviando reporte:", err);
-                        sendBtn.style.background = '#ef4444'; // Error
                         sendBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        sendBtn.style.background = '#ef4444';
 
                         setTimeout(() => {
                             sendBtn.disabled = false;
                             sendBtn.innerHTML = originalHTML;
-                            sendBtn.style.background = originalBg;
+                            sendBtn.style.opacity = '1';
                         }, 3000);
                     }
                 }
             };
-            adminActions.appendChild(sendBtn);
+            document.body.appendChild(sendBtn);
         }
     }
 
