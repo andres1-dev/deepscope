@@ -14,10 +14,23 @@ function initAuth() {
 function checkSession() {
     try {
         const storedUser = localStorage.getItem(AUTH_KEY);
+        const lastActivity = parseInt(localStorage.getItem(CONFIG.ACTIVITY_KEY) || '0');
+        const now = Date.now();
+
         if (storedUser) {
+            // Verificar expiración por tiempo (Seguridad agresiva inicial)
+            if (lastActivity > 0 && (now - lastActivity > CONFIG.SESSION_TIMEOUT_MS)) {
+                console.warn("Sesión expirada detectada en checkSession: ", (now - lastActivity) / 1000, "segundos de inactividad");
+                logout();
+                return;
+            }
+
             currentUser = JSON.parse(storedUser);
             window.currentUser = currentUser;
             console.log("Sesión restaurada para:", currentUser.nombre);
+
+            // Actualizar tiempo de actividad al restaurar sesión
+            updateActivityTime();
 
             // Mostrar app
             showApp();
@@ -62,20 +75,19 @@ function showApp() {
 }
 
 function logout() {
+    console.log("Cerrando sesión del sistema...");
     currentUser = null;
     localStorage.removeItem(AUTH_KEY);
     localStorage.removeItem('apiKey');
-    localStorage.removeItem(ACTIVITY_KEY);
+    localStorage.removeItem(CONFIG.ACTIVITY_KEY);
     sessionStorage.removeItem('token');
     window.location.replace('login.html');
 }
 
 // --- LOGICA DE INACTIVIDAD ---
-const ACTIVITY_KEY = 'last_activity_timestamp';
-const INACTIVITY_LIMIT_MS = 60 * 60 * 1000; // 1 hora
 
 function updateActivityTime() {
-    localStorage.setItem(ACTIVITY_KEY, Date.now().toString());
+    localStorage.setItem(CONFIG.ACTIVITY_KEY, Date.now().toString());
 }
 
 let inactivityInterval = null;
@@ -83,7 +95,7 @@ let inactivityInterval = null;
 function initInactivityMonitoring() {
     if (inactivityInterval) return; // Ya iniciado
 
-    // Actualizar timestamp al iniciar
+    // Actualizar timestamp al iniciar por si acaso
     updateActivityTime();
 
     // Eventos que reinician el contador
@@ -104,29 +116,36 @@ function initInactivityMonitoring() {
         window.addEventListener(evt, recordActivity, { passive: true });
     });
 
-    // Chequear inactividad cada minuto
-    inactivityInterval = setInterval(checkInactivity, 60000);
+    // --- SEGURIDAD AGRESIVA: RESUME CHECK ---
+    // Verificar inactividad apenas la app vuelva a primer plano
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            console.log("App volvió a primer plano. Verificando inactividad...");
+            checkInactivity();
+        }
+    });
+
+    // También al enfocar la ventana
+    window.addEventListener('focus', () => {
+        console.log("Ventana enfocada. Verificando inactividad...");
+        checkInactivity();
+    });
+
+    // Chequear inactividad periódicamente cada 2 segundos (monitoreo agresivo)
+    inactivityInterval = setInterval(checkInactivity, 2000);
 }
 
 function checkInactivity() {
-    const lastActivity = parseInt(localStorage.getItem(ACTIVITY_KEY) || '0');
+    const lastActivity = parseInt(localStorage.getItem(CONFIG.ACTIVITY_KEY) || '0');
     const now = Date.now();
+    const timeout = (window.CONFIG && window.CONFIG.SESSION_TIMEOUT_MS) ? window.CONFIG.SESSION_TIMEOUT_MS : 60000;
+
+    // Si no hay user, nada que chequear
+    if (!localStorage.getItem(AUTH_KEY)) return;
 
     // Si ha pasado el tiempo límite
-    if (now - lastActivity > INACTIVITY_LIMIT_MS) {
-
-        // VERIFICAR COLA DE CARGA
-        if (window.uploadQueue) {
-            const hasPending = window.uploadQueue.queue.length > 0;
-            const isProcessing = window.uploadQueue.isProcessing;
-
-            if (hasPending || isProcessing) {
-                console.log("Inactividad detectada, pero hay elementos en cola. Sesión mantenida.");
-                return;
-            }
-        }
-
-        console.log("Cerrando sesión por inactividad (> 1h)");
+    if (now - lastActivity > timeout) {
+        console.error("DEBUG: Inactividad crítica detectada. Logout inmediato.");
         logout();
     }
 }

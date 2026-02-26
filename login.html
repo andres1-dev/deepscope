@@ -232,10 +232,37 @@
             display: none;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        .btn-login.biometric-active {
+            height: 120px;
+            flex-direction: column;
+            gap: 15px;
+            background: white;
+            color: #2563eb;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            font-size: 1.1rem;
+        }
+
+        .btn-login.biometric-active i {
+            font-size: 2.5rem;
+        }
+
+        #loginForm {
+            transition: opacity 0.3s ease;
+        }
+
+        .hidden-form {
+            display: none !important;
+        }
+
+        .backup-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -257,36 +284,38 @@
             </div>
 
             <form id="loginForm">
-                <div class="form-group">
-                    <label for="userId">Identificación</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-id-card"></i>
-                        <input type="text" id="userId" placeholder="Ingresa tu ID" required autocomplete="username"
-                            inputmode="text">
+                <div id="manualFields">
+                    <div class="form-group">
+                        <label for="userId">Identificación</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="userId" placeholder="Ingresa tu ID" autocomplete="username"
+                                inputmode="text">
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="••••••••" required
-                            autocomplete="current-password">
-                        <i class="fas fa-eye-slash toggle-password" id="togglePassword"></i>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+                            <i class="fas fa-eye-slash toggle-password" id="togglePassword"></i>
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" id="submitBtn" class="btn-login">
-                    <span id="btnText">Entrar</span>
-                    <div class="spinner" id="spinner"></div>
-                </button>
+                    <button type="submit" id="submitBtn" class="btn-login">
+                        <span id="btnText">Entrar</span>
+                        <div class="spinner" id="spinner"></div>
+                    </button>
+                </div>
 
                 <!-- Botón de Biometría -->
-                <button type="button" id="biometricBtn" class="btn-login"
-                    style="margin-top: 12px; background: white; color: #2563eb; border: 1px solid #e2e8f0; display: none;">
+                <button type="button" id="biometricBtn" class="btn-login" style="display: none;">
                     <i class="fas fa-fingerprint"></i>
-                    <span>Acceder con Biometría</span>
+                    <span>Acceso Biométrico</span>
                 </button>
+
+                <a href="#" id="usePasswordLink" class="backup-link" style="display: none;">Usar contraseña</a>
             </form>
 
             <div class="login-footer-compact">
@@ -327,11 +356,29 @@
         async function checkBiometricSupport() {
             const isSupported = window.PublicKeyCredential &&
                 await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-            if (isSupported && localStorage.getItem('biometricId')) {
+
+            const hasBiometricId = localStorage.getItem('biometricId');
+
+            if (isSupported && hasBiometricId) {
+                // Modo Biométrico Activo: Ocultar campos manuales
+                document.getElementById('manualFields').classList.add('hidden-form');
                 biometricBtn.style.display = 'flex';
+                biometricBtn.classList.add('biometric-active');
+                document.getElementById('usePasswordLink').style.display = 'block';
+                console.log("Modo biométrico activado. Formulario oculto para evitar teclados.");
             }
         }
         checkBiometricSupport();
+
+        // Switch de Vuelta a Manual
+        document.getElementById('usePasswordLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('manualFields').classList.remove('hidden-form');
+            biometricBtn.classList.remove('biometric-active');
+            biometricBtn.style.marginTop = '15px';
+            e.target.style.display = 'none';
+            userIdInput.focus();
+        });
 
         biometricBtn.addEventListener('click', async () => {
             try {
@@ -409,6 +456,9 @@
             localStorage.setItem('user', JSON.stringify(result.user));
             if (result.token) sessionStorage.setItem('token', result.token);
             if (result.apiKey) localStorage.setItem('apiKey', result.apiKey);
+
+            // Inicializar timestamp de actividad
+            localStorage.setItem(CONFIG.ACTIVITY_KEY, Date.now().toString());
 
             // Si el usuario no tiene biometría configurada pero el dispositivo la soporta,
             // podríamos preguntar aquí. Por ahora solo guardamos el ID para habilitar el botón después.
@@ -510,9 +560,25 @@
             errorDiv.style.display = 'flex';
         }
 
-        if (localStorage.getItem('user')) {
-            window.location.href = 'index.html';
-        }
+        // Verificar si ya hay sesión pero cuidando la inactividad
+        (function () {
+            const user = localStorage.getItem('user');
+            const lastActivity = parseInt(localStorage.getItem(CONFIG.ACTIVITY_KEY) || '0');
+            const now = Date.now();
+            const timeout = CONFIG.SESSION_TIMEOUT_MS;
+
+            if (user) {
+                if (lastActivity > 0 && (now - lastActivity > timeout)) {
+                    console.log("Sesión previa expirada por inactividad. Limpiando...");
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('apiKey');
+                    localStorage.removeItem(CONFIG.ACTIVITY_KEY);
+                    sessionStorage.removeItem('token');
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }
+        })();
     </script>
 </body>
 

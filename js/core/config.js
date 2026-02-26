@@ -13,7 +13,12 @@ const CONFIG = {
         FACEBOOK: "https://www.facebook.com/templodelamoda/",
         INSTAGRAM: "https://www.instagram.com/eltemplodelamoda/",
         WHATSAPP: "https://wa.me/573168007979"
-    }
+    },
+    // Configuración de Sesión
+    //SESSION_TIMEOUT_MS: 60 * 60 * 1000, // 1 hora de inactividad
+    //SESSION_TIMEOUT_MS: 60 * 1000, // 1 minuto de inactividad (para pruebas)
+    SESSION_TIMEOUT_MS: 20 * 60 * 1000, // 20 minutos de inactividad
+    ACTIVITY_KEY: 'last_activity_timestamp'
 };
 
 // Mapeo de clientes a NIT (Movido aquí para acceso global)
