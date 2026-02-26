@@ -367,7 +367,7 @@
                 const svgIcon = BIOMETRY.getSVGForType();
                 const label = BIOMETRY.getLabelForType();
 
-                biometricBtn.innerHTML = `${svgIcon}<span>Entrar con ${label}</span>`;
+                biometricBtn.innerHTML = `${svgIcon}<span>${label}</span>`;
 
                 // Modo Biométrico Activo: Ocultar campos manuales
                 document.getElementById('manualFields').classList.add('hidden-form');

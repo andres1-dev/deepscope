@@ -8,7 +8,7 @@ const CONFIG = {
     CACHE_TTL: 24 * 60 * 60 * 1000, // 24 horas en milisegundos
     MAX_IMAGE_SIZE: 800, // Tamaño máximo para redimensionar imágenes
     MAX_CHUNK_SIZE: 50000, // ~50KB por solicitud
-    FOOTER_CREDITS: "Developed by <strong>Andrés Mendoza</strong><br>© 2026 · Supported by GrupoTDM",
+    FOOTER_CREDITS: "Developed by <strong>Andrés Mendoza</strong><br>2026 · Supported by GrupoTDM",
     SOCIAL_LINKS: {
         FACEBOOK: "https://www.facebook.com/templodelamoda/",
         INSTAGRAM: "https://www.instagram.com/eltemplodelamoda/",
