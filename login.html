@@ -76,9 +76,7 @@
         .login-container {
             width: 100%;
             max-width: 360px;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            background: transparent;
             padding: 28px 20px;
         }
 
@@ -362,10 +360,15 @@
             if (isSupported && hasBiometricId) {
                 // Modo Biométrico Activo: Ocultar campos manuales
                 document.getElementById('manualFields').classList.add('hidden-form');
+
+                // DESACTIVAR INPUTS para evitar despliegue de teclado por nada del mundo
+                userIdInput.disabled = true;
+                passwordInput.disabled = true;
+
                 biometricBtn.style.display = 'flex';
                 biometricBtn.classList.add('biometric-active');
                 document.getElementById('usePasswordLink').style.display = 'block';
-                console.log("Modo biométrico activado. Formulario oculto para evitar teclados.");
+                console.log("Modo biométrico activado. Teclados bloqueados.");
             }
         }
         checkBiometricSupport();
@@ -374,10 +377,15 @@
         document.getElementById('usePasswordLink').addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('manualFields').classList.remove('hidden-form');
+
+            // REACTIVAR INPUTS
+            userIdInput.disabled = false;
+            passwordInput.disabled = false;
+
             biometricBtn.classList.remove('biometric-active');
             biometricBtn.style.marginTop = '15px';
             e.target.style.display = 'none';
-            userIdInput.focus();
+            setTimeout(() => userIdInput.focus(), 100);
         });
 
         biometricBtn.addEventListener('click', async () => {
@@ -453,16 +461,23 @@
         }
 
         function processLogin(result) {
+            console.log("Procesando login exitoso...");
+
+            // 1. Inicializar timestamp de actividad PRIMERO que nada
+            const activityKey = (typeof CONFIG !== 'undefined' && CONFIG.ACTIVITY_KEY) ? CONFIG.ACTIVITY_KEY : 'last_activity_timestamp';
+            localStorage.setItem(activityKey, Date.now().toString());
+
+            // 2. Guardar datos de usuario
             localStorage.setItem('user', JSON.stringify(result.user));
             if (result.token) sessionStorage.setItem('token', result.token);
             if (result.apiKey) localStorage.setItem('apiKey', result.apiKey);
 
-            // Inicializar timestamp de actividad
-            localStorage.setItem(CONFIG.ACTIVITY_KEY, Date.now().toString());
+            console.log("Sesión preparada. Redirigiendo...");
 
-            // Si el usuario no tiene biometría configurada pero el dispositivo la soporta,
-            // podríamos preguntar aquí. Por ahora solo guardamos el ID para habilitar el botón después.
-            window.location.href = 'index.html';
+            // 3. Pequeño delay para asegurar escritura en disco antes del salto
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 100);
         }
 
         // Handle Login Normal
