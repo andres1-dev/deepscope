@@ -162,8 +162,8 @@ const BIOMETRY = {
         switch (type) {
             case 'faceid': return 'FaceID';
             case 'touchid': return 'TouchID';
-            case 'fingerprint': return 'Huella Digital';
-            case 'key': return 'PIN / Llave';
+            case 'fingerprint': return 'Huella';
+            case 'key': return 'Llave';
             default: return 'Biometría';
         }
     }
