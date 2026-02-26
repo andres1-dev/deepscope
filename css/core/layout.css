@@ -1054,6 +1054,25 @@
   transform: scale(0.98);
 }
 
+/* Ajustes específicos para el botón de biometría con iconos grandes */
+#biometricBtn {
+  gap: 16px;
+  min-height: 72px;
+  /* Espacio para el icono de 50px con holgura */
+  padding: 8px 24px;
+}
+
+#biometricBtn svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+#biometricBtn span {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
 .login-footer-compact {
   margin-top: 28px;
   text-align: center;

@@ -114,7 +114,7 @@ const BIOMETRY = {
         const type = this.getAuthenticatorType();
         const icons = {
             // FaceID Original (Apple Style)
-            faceid: `<svg width="50" height="50" viewBox="0 0 80 80" fill="currentColor" style="margin-right:12px;">
+            faceid: `<svg width="50" height="50" viewBox="0 0 80 80" fill="currentColor">
                 <g id="Face-ID">
                     <g id="Corners" fill-rule="nonzero">
                         <path d="M4.114,21.943 L4.114,13.029 C4.114,7.993 7.993,4.114 13.029,4.114 L21.943,4.114 C23.079,4.114 24,3.193 24,2.057 C24,0.921 23.079,0 21.943,0 L13.029,0 C5.721,0 0,5.721 0,13.029 L0,21.943 C0,23.079 0.921,24 2.057,24 C3.193,24 4.114,23.079 4.114,21.943 Z"></path>
@@ -136,7 +136,7 @@ const BIOMETRY = {
             </svg>`,
 
             // Fingerprint Recognition Original
-            fingerprint: `<svg width="50" height="50" viewBox="0 0 32 32" fill="currentColor" style="margin-right:12px;">
+            fingerprint: `<svg width="50" height="50" viewBox="0 0 32 32" fill="currentColor">
                 <path d="M7,5.21a.77.77,0,0,1-.46-1.38A15.46,15.46,0,0,1,16,1.c2.66,0,6.48.45,9.5,2.62a.77.77,0,0,1,.18,1.07.78.78,0,0,1-1.08.17A15,15,0,0,0,16,2.53,14,14,0,0,0,7.5,5.05.74.74,0,0,1,7,5.21Z"/>
                 <path d="M28.23,12.26a.78.78,0,0,1-.63-.33C25.87,9.49,22.78,6.24,16,6.24a14,14,0,0,0-11.63,5.7.77.77,0,0,1-1.07.17A.76.76,0,0,1,3.15,11,15.54,15.54,0,0,1,16,4.71c5.61,0,9.81,2.08,12.84,6.34a.77.77,0,0,1-.19,1.07A.79.79,0,0,1,28.23,12.26Z"/>
                 <path d="M12.28,31a.78.78,0,0,1-.72-.49.75.75,0,0,1,.44-1c4.37-1.68,7-5.12,7-9.21a2.8,2.8,0,0,0-3-3c-1.86,0-2.76,1-3,3.35a4.27,4.27,0,0,1-4.52,3.83,4.27,4.27,0,0,1-4.32-4.59A11.71,11.71,0,0,1,16,8.39a12,12,0,0,1,12,11.93,18.66,18.66,0,0,1-1.39,6.5.78.78,0,0,1-1,.41.76.76,0,0,1-.41-1,17.25,17.25,0,0,0,1.27-5.91A10.45,10.45,0,0,0,16,9.92a10.18,10.18,0,0,0-10.38,10,2.77,2.77,0,0,0,2.79,3.06,2.74,2.74,0,0,0,3-2.48c.36-3.11,1.89-4.69,4.56-4.69a4.31,4.31,0,0,1,4.52,4.56c0,4.74-3,8.72-8,10.63A.92.92,0,0,1,12.28,31Z"/>
@@ -145,11 +145,11 @@ const BIOMETRY = {
             </svg>`,
 
             // Key Original (Security Key Style)
-            key: `<svg width="50" height="50" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right:12px;">
+            key: `<svg width="50" height="50" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12.3212 10.6852L4 19L6 21M7 16L9 18M20 7.5C20 9.98528 17.9853 12 15.5 12C13.0147 12 11 9.98528 11 7.5C11 5.01472 13.0147 3 15.5 3C17.9853 3 20 5.01472 20 7.5Z"/>
             </svg>`,
 
-            generic: `<svg width="50" height="50" viewBox="0 0 24 24" fill="currentColor" style="margin-right:12px;">
+            generic: `<svg width="50" height="50" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" />
             </svg>`
         };
