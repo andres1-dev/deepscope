@@ -76,6 +76,61 @@ const BIOMETRY = {
     // Verificar si ya está registrado
     isRegistered() {
         return !!localStorage.getItem('biometricId');
+    },
+
+    // Detectar el tipo probable de biometría (Heurística avanzada)
+    getAuthenticatorType() {
+        const ua = window.navigator.userAgent.toLowerCase();
+        const platform = window.navigator.platform.toLowerCase();
+
+        // 1. Detección de iOS (FaceID vs TouchID)
+        if (/iphone|ipad|ipod/.test(ua)) {
+            // Heurística para dispositivos con FaceID (sin botón de inicio)
+            // Modelos notch/dynamic island tienen ratios de pantalla específicos
+            const ratio = window.devicePixelRatio || 1;
+            const screenW = window.screen.width * ratio;
+            const screenH = window.screen.height * ratio;
+
+            // iPhone X, XS, 11, 12, 13, 14, 15 Pro Max etc (No home button)
+            const isTall = (screenH / screenW > 2);
+            return isTall ? 'faceid' : 'touchid';
+        }
+
+        // 2. Android (Casi siempre huella o reconocimiento facial estándar)
+        if (/android/.test(ua)) {
+            return 'fingerprint';
+        }
+
+        // 3. Desktop o Genérico
+        if (/mac|win|linux/.test(platform)) {
+            return 'key'; // Windows Hello / TouchBar Mac
+        }
+
+        return 'generic';
+    },
+
+    // Obtener el icono correspondiente al tipo
+    getIconForType() {
+        const type = this.getAuthenticatorType();
+        switch (type) {
+            case 'faceid': return 'fas fa-face-viewfinder'; // Requiere FA6 o fallback
+            case 'touchid':
+            case 'fingerprint': return 'fas fa-fingerprint';
+            case 'key': return 'fas fa-key';
+            default: return 'fas fa-user-shield';
+        }
+    },
+
+    // Obtener etiqueta legible
+    getLabelForType() {
+        const type = this.getAuthenticatorType();
+        switch (type) {
+            case 'faceid': return 'FaceID';
+            case 'touchid': return 'TouchID';
+            case 'fingerprint': return 'Huella Digital';
+            case 'key': return 'PIN / Llave';
+            default: return 'Biometría';
+        }
     }
 };
 

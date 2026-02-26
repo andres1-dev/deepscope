@@ -22,6 +22,7 @@
 
     <!-- Configuración Global de la App y Branding Dinámico -->
     <script src="js/core/config.js"></script>
+    <script src="js/core/biometry.js"></script>
     <script>
         // Aplicar branding tan pronto cargue
         document.title = `${CONFIG.APP_NAME} - Acceso`;
@@ -356,23 +357,28 @@
 
         // --- LÓGICA DE BIOMETRÍA (WEB AUTH) ---
         async function checkBiometricSupport() {
-            const isSupported = window.PublicKeyCredential &&
-                await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+            if (typeof BIOMETRY === 'undefined') return;
 
-            const hasBiometricId = localStorage.getItem('biometricId');
+            const isSupported = await BIOMETRY.isSupported();
+            const hasBiometricId = BIOMETRY.isRegistered();
 
             if (isSupported && hasBiometricId) {
+                // Actualizar Icono y Texto según el dispositivo
+                const iconClass = BIOMETRY.getIconForType();
+                const label = BIOMETRY.getLabelForType();
+
+                biometricBtn.innerHTML = `<i class="${iconClass}"></i><span>Entrar con ${label}</span>`;
+
                 // Modo Biométrico Activo: Ocultar campos manuales
                 document.getElementById('manualFields').classList.add('hidden-form');
 
-                // DESACTIVAR INPUTS para evitar despliegue de teclado por nada del mundo
+                // DESACTIVAR INPUTS
                 userIdInput.disabled = true;
                 passwordInput.disabled = true;
 
                 biometricBtn.style.display = 'flex';
                 biometricBtn.classList.add('biometric-active');
                 document.getElementById('usePasswordLink').style.display = 'block';
-                console.log("Modo biométrico activado. Teclados bloqueados.");
             }
         }
         checkBiometricSupport();

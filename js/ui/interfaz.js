@@ -953,8 +953,9 @@ function initSettingsUI() {
                     biometrySetting.style.display = 'flex';
                     if (biometryToggle) biometryToggle.checked = BIOMETRY.isRegistered();
                     if (biometryDesc) {
+                        const label = BIOMETRY.getLabelForType();
                         biometryDesc.textContent = BIOMETRY.isRegistered() ?
-                            "Activado (Huella/FaceID)" : "Desactivado";
+                            `Activado (${label})` : "Desactivado";
                     }
                 } else {
                     biometrySetting.style.display = 'none';
