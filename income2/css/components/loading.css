@@ -1,0 +1,147 @@
+﻿/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #0f172a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.loading-overlay::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: ambientPulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes ambientPulse {
+    0%, 100% { transform: scale(0.9); opacity: 0.6; }
+    50%       { transform: scale(1.1); opacity: 1; }
+}
+
+.loading-overlay.active { opacity: 1; visibility: visible; }
+
+/* Core: rings + bars */
+.loading-core {
+    position: relative;
+    width: 120px; height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.loading-pulse-ring {
+    position: absolute;
+    border-radius: 50%;
+    animation: pulseRing 2.4s ease-out infinite;
+}
+
+.ring-1 { width: 120px; height: 120px; border: 1.5px solid rgba(99,102,241,0.5); animation-delay: 0s; }
+.ring-2 { width: 92px;  height: 92px;  border: 1.5px solid rgba(139,92,246,0.4); animation-delay: 0.5s; }
+.ring-3 { width: 66px;  height: 66px;  border: 1.5px solid rgba(167,139,250,0.3); animation-delay: 1s; }
+
+@keyframes pulseRing {
+    0%   { transform: scale(0.88); opacity: 0.9; }
+    60%  { transform: scale(1.12); opacity: 0.1; }
+    100% { transform: scale(0.88); opacity: 0.9; }
+}
+
+.loading-logo-wrap, .loading-logo-img { display: none; }
+
+.loading-bars {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 28px;
+}
+
+.loading-bars span {
+    width: 5px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #a78bfa, #6366f1);
+    animation: barBounce 0.9s ease-in-out infinite;
+}
+
+.loading-bars span:nth-child(1) { animation-delay: 0s;    height: 35%; }
+.loading-bars span:nth-child(2) { animation-delay: 0.12s; height: 65%; }
+.loading-bars span:nth-child(3) { animation-delay: 0.24s; height: 100%; }
+.loading-bars span:nth-child(4) { animation-delay: 0.36s; height: 65%; }
+.loading-bars span:nth-child(5) { animation-delay: 0.48s; height: 35%; }
+
+@keyframes barBounce {
+    0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+    50%       { transform: scaleY(1);   opacity: 1; }
+}
+
+/* Un texto a la vez, perfectamente centrado */
+.loading-stream {
+    width: 360px;
+    max-width: 88vw;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.loading-stream-line {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    letter-spacing: 0.03em;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.loading-stream-line.visible { opacity: 1; }
+
+.loading-stream-line.dim    { color: rgba(99,102,241,0.5);   }
+.loading-stream-line.mid    { color: rgba(148,163,184,0.7);  }
+.loading-stream-line.bright { color: rgba(167,139,250,0.95); }
+.loading-stream-line.accent { color: rgba(52,211,153,0.9);   }
+
+/* Progress bar */
+.loading-progress {
+    width: 200px; height: 2px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.loading-progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #6366f1, #a78bfa, #6366f1);
+    background-size: 200% 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+    animation: shimmerBar 1.8s linear infinite;
+}
+
+@keyframes shimmerBar {
+    0%   { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}

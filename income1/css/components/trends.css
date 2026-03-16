@@ -1,0 +1,278 @@
+/* Trend Analysis Card Styles - matching backup.html */
+.trend-analysis-card {
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-md);
+    overflow: hidden;
+    margin-top: 0;
+    transition: var(--transition);
+    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+    border: 1px solid var(--border-color);
+}
+
+.trend-analysis-card:hover {
+    box-shadow: var(--box-shadow-xl);
+    transform: translateY(-8px);
+    border-color: var(--primary-light);
+}
+
+.card:hover .card-icon.tendencia,
+.card.expanded .card-icon.tendencia {
+    background: var(--info-color);
+    color: white;
+}
+
+/* Executive summary */
+.executive-summary {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--primary-color);
+}
+
+.summary-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-top: 2px;
+}
+
+.summary-content {
+    flex: 1;
+}
+
+.trend-indicator {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.indicator-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: var(--text-medium);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.indicator-text {
+    font-weight: 600;
+    margin-right: 6px;
+    color: var(--text-dark);
+}
+
+.indicator-value {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.indicator-value.positive {
+    color: var(--success-color);
+}
+
+.indicator-value.negative {
+    color: var(--danger-color);
+}
+
+.indicator-value.neutral {
+    color: var(--warning-color);
+}
+
+/* Chart styles */
+.chart-container {
+    position: relative;
+    height: 340px;
+    margin: 28px 0;
+    background: linear-gradient(135deg, #ffffff, #fefefe);
+    border-radius: var(--border-radius);
+    padding: 28px;
+    border: 2px solid var(--border-color);
+    box-shadow: var(--box-shadow-md);
+}
+
+.chart-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chart-title {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 18px;
+    letter-spacing: -0.02em;
+}
+
+.chart-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.chart-action-btn {
+    background: linear-gradient(135deg, var(--bg-light), var(--bg-gray));
+    border: 2px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--box-shadow);
+    color: var(--text-dark);
+}
+
+.chart-action-btn:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-md);
+}
+
+.chart-footer {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-medium);
+    text-align: right;
+    font-weight: 500;
+}
+
+.chart-note {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* Responsive chart - NO afecta captura */
+@media (max-width: 768px) {
+    .card:not(.capture-mode *) .chart-container {
+        height: 240px;
+        padding: 16px;
+        margin: 16px 0;
+    }
+    
+    .card:not(.capture-mode *) .chart-title {
+        font-size: 15px;
+    }
+    
+    .card:not(.capture-mode *) .chart-action-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .card:not(.capture-mode *) .chart-footer {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card:not(.capture-mode *) .chart-container {
+        height: 200px;
+        padding: 12px;
+        margin: 12px 0;
+    }
+    
+    .card:not(.capture-mode *) .chart-title {
+        font-size: 13px;
+    }
+    
+    .card:not(.capture-mode *) .chart-action-btn {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+    
+    .card:not(.capture-mode *) .chart-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .card:not(.capture-mode *) .chart-footer {
+        font-size: 10px;
+        text-align: center;
+    }
+}
+
+/* Highlight data items - mismo estilo que executive-summary */
+.data-item.highlight {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--primary-color);
+    transition: var(--transition);
+    box-shadow: var(--box-shadow);
+}
+
+.data-item.highlight:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-md);
+}
+
+.data-description {
+    font-size: 13px;
+    color: var(--text-medium);
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+/* Trend value color states */
+#tendencia-actual.positive,
+#tendencia-proyeccion.positive,
+#tendencia-crecimiento.positive {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+#tendencia-actual.negative,
+#tendencia-proyeccion.negative,
+#tendencia-crecimiento.negative {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+#tendencia-actual.neutral,
+#tendencia-proyeccion.neutral,
+#tendencia-crecimiento.neutral {
+    color: var(--warning-color);
+    font-weight: 600;
+}
+
+/* Comparison items in trend analysis */
+.comparison-item {
+    padding: 16px 18px;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+    border: 2px solid transparent;
+}
+
+.comparison-item:hover {
+    background: linear-gradient(135deg, #ffffff, var(--bg-light));
+    border-color: var(--border-color);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+.comparison-item.positive {
+    border-left: 4px solid var(--success-color);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(255, 255, 255, 0.9));
+}
+
+.comparison-item.negative {
+    border-left: 4px solid var(--danger-color);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(255, 255, 255, 0.9));
+}
+
+.comparison-description {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-top: 6px;
+    font-weight: 500;
+}

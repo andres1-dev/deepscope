@@ -1,0 +1,76 @@
+/* Footer Styles */
+.app-footer {
+    position: relative;
+    z-index: 1;
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
+    background: transparent;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-line {
+    font-size: var(--font-size-md);
+    color: var(--text-medium);
+    font-weight: var(--font-weight-normal);
+    text-align: center;
+    line-height: var(--line-height-tight);
+}
+
+.footer-line strong {
+    font-weight: var(--font-weight-bold);
+    color: var(--text-dark);
+}
+
+.footer-copyright,
+.footer-powered {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+}
+
+/* Ocultar footer durante captura */
+.capturing .app-footer {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .app-footer {
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+    }
+    
+    .footer-content {
+        gap: 6px;
+    }
+    
+    .footer-line {
+        font-size: var(--font-size-base);
+    }
+    
+    .footer-copyright,
+    .footer-powered {
+        font-size: var(--font-size-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .app-footer {
+        padding: var(--spacing-md) var(--spacing-xs);
+    }
+    
+    .footer-line {
+        font-size: var(--font-size-base);
+    }
+    
+    .footer-copyright,
+    .footer-powered {
+        font-size: var(--font-size-xs);
+    }
+}

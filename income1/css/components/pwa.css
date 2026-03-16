@@ -1,0 +1,70 @@
+/* PWA Components: Install Button and Swipe Refresh */
+
+.install-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: var(--box-shadow-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition);
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeInUp 0.5s forwards 1s;
+}
+
+.install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-lg);
+    background: var(--primary-dark);
+}
+
+.install-btn.hidden {
+    display: none;
+}
+
+.install-btn.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Swipe Refresh Indicator */
+.swipe-refresh-indicator {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow-lg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: swipeRefresh 0.3s ease-out;
+    font-weight: 600;
+}
+
+.swipe-refresh-indicator i {
+    animation: spin 0.8s linear infinite;
+}
+
+@media (max-width: 768px) {
+    .install-btn {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}

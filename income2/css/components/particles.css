@@ -1,0 +1,26 @@
+/* Particles Canvas */
+.particles-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#particlesCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Z-index del contenido sobre partículas */
+.dashboard-header,
+.cards-container,
+.cards-container2,
+.app-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.capturing .particles-container { display: none; }
